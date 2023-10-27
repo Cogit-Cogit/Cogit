@@ -3,7 +3,8 @@ package com.whitemind.cogit.member.service;
 import com.whitemind.cogit.auth.service.GithubService;
 import com.whitemind.cogit.common.entity.JWT;
 import com.whitemind.cogit.common.util.JwtService;
-import com.whitemind.cogit.member.dto.Member;
+import com.whitemind.cogit.member.dto.UpdateMemberDto;
+import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +32,10 @@ public class MemberServiceImpl implements MemberService{
     public void refreshGithubMember(String code, HttpServletResponse response) throws IOException {
         log.info("UserServiceImple_refreshGithubMember | 사용자 정보 추가 or 갱신");
         String accessToken = githubService.getAccessToken(code);
-        Member member = githubService.getGithubUserInfo(accessToken);
-        JWT jwt = jwtService.createAccessToken("memberId",member.getMemberId()); // key, value
-        member.setMemberRefreshToken(jwt.getRefreshToken());
-        memberRepository.save(member);
+        UpdateMemberDto updateMemberDto = githubService.getGithubUserInfo(accessToken);
+        JWT jwt = jwtService.createAccessToken("memberId",updateMemberDto.getMemberId()); // key, value
+        updateMemberDto.setMemberRefreshToken(jwt.getRefreshToken());
+        memberRepository.save(updateMemberDto.toMemberEntity());
         setToken(jwt, response);
     }
 }

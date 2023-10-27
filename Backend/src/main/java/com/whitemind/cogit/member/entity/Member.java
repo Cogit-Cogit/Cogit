@@ -23,11 +23,15 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int memberId;
 
-    private String memberEmail;
+    private String memberGitUrl;
 
     private String memberName;
 
     private String memberRefreshToken;
+
+    private String memberGitAvatarUrl;
+
+    private String memberGitAccessToken;
 
     @OneToMany(mappedBy = "member")
     private List<Code> codeList;
@@ -39,7 +43,8 @@ public class Member extends BaseEntity {
     private List<MemberTeam> memberTeamList;
 
     @OneToMany(mappedBy = "member")
-    private List<MemberProblem> memberProblemList;
+    private List<MemberAlgorithmQuest> memberAlgorithmQuestList;
+
 
     //닉네임 수정
     public void updateNickname(String memberName) {

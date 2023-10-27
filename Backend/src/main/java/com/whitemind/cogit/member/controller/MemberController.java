@@ -1,10 +1,7 @@
 package com.whitemind.cogit.member.controller;
 
-import com.whitemind.cogit.auth.service.GithubService;
 import com.whitemind.cogit.common.response.ResponseResult;
 import com.whitemind.cogit.common.response.SingleResponseResult;
-import com.whitemind.cogit.member.dto.Member;
-import com.whitemind.cogit.member.repository.MemberRepository;
 import com.whitemind.cogit.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/member")
+@RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
     @GetMapping("/github")

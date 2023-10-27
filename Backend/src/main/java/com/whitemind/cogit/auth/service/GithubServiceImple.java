@@ -1,6 +1,7 @@
 package com.whitemind.cogit.auth.service;
 
-import com.whitemind.cogit.member.dto.Member;
+import com.whitemind.cogit.member.dto.UpdateMemberDto;
+import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class GithubServiceImple implements GithubService {
      * @return
      * @throws IOException
      */
-    public Member getGithubUserInfo(String accessToken) throws IOException {
+    public UpdateMemberDto getGithubUserInfo(String accessToken) throws IOException {
         log.info("getGithubUserInfo | 유저 정보 요청");
         URL url = new URL("https://api.github.com/user");
         HttpURLConnection conn = (HttpURLConnection)  url.openConnection();
@@ -44,10 +45,10 @@ public class GithubServiceImple implements GithubService {
         String responseData = getResponse(conn, responseCode);
         JSONObject jObject = new JSONObject(responseData);
 
-        Member member = new Member(jObject.getLong("id"), jObject.getString("html_url"), jObject.getString("login"), "", accessToken);
+        UpdateMemberDto updateMemberDto = new UpdateMemberDto(jObject.getInt("id"), jObject.getString("html_url"), jObject.getString("login"), "", jObject.getString("avatar_url"), accessToken);
 
         conn.disconnect();
-        return member;
+        return updateMemberDto;
     }
 
     /**
