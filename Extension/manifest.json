@@ -10,23 +10,27 @@
     {
       "matches": ["https://www.acmicpc.net/submit/*", "https://www.acmicpc.net/status?*"],
       "js": ["contentscript.js"]
+    },
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["authorize.js"]
     }
   ],
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "/images/icons8-color-16.png",
-      "32": "/images/icons8-color-32.png",
-      "48": "/images/icons8-color-48.png",
-      "128": "/images/icons8-color-128.png"
+      "16": "/images/cogit.PNG",
+      "32": "/images/cogit.PNG",
+      "48": "/images/cogit.PNG",
+      "128": "/images/cogit.PNG"
     }
   },
   "icons": {
-    "16": "/images/icons8-color-16.png",
-    "32": "/images/icons8-color-32.png",
-    "48": "/images/icons8-color-48.png",
-    "128": "/images/icons8-color-128.png"
+    "16": "/images/cogit.PNG",
+    "32": "/images/cogit.PNG",
+    "48": "/images/cogit.PNG",
+    "128": "/images/cogit.PNG"
   },
   "options_page": "options.html"
 }
