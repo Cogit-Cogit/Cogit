@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @SuperBuilder(toBuilder = true)
 @Table(name = "member")
-public class Member extends BaseEntity {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int memberId;
