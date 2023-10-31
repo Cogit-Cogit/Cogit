@@ -13,21 +13,13 @@ if (submitButton != null) {
 // }
 
 function saveCode() {
-  // CodeMirror-line 클래스를 가지고 있는 모든 요소를 선택합니다.
-  const codeMirrorLines = document.querySelectorAll(".CodeMirror-line");
+  const codeMirrorLines = document.querySelectorAll('.CodeMirror-line');
 
-  // 각 요소에 포함된 내용을 추출하여 배열에 저장합니다.
-  const linesContent = Array.from(codeMirrorLines).map(
-    (line) => line.textContent
-  );
+  const linesContent = Array.from(codeMirrorLines).map((line) => line.textContent);
 
-  // 각 내용을 줄바꿈으로 연결합니다.
-  const contentWithNewlines = linesContent.join("\n");
+  const contentWithNewlines = linesContent.join('\n');
 
-  // 결과를 출력하거나 다른 작업을 수행합니다.
-  console.log(contentWithNewlines);
-
-  localStorage.setItem("code", contentWithNewlines);
+  localStorage.setItem('code', contentWithNewlines);
 }
 
 let solutionElements = document.querySelectorAll('[id^="solution-"]');
@@ -61,69 +53,25 @@ if (solutionElements.length > 0) {
           let codeRunningTime =
             firstSolutionElement.querySelector(".time").textContent;
           let algorithmQuestId = firstSolutionElement
-            .querySelector("td:nth-child(3)")
-            .querySelector("a").textContent;
-          sendCode(
-            currentContent,
-            codeLanguage,
-            codeRunningTime,
-            algorithmQuestId
-          );
+            .querySelector('td:nth-child(3)')
+            .querySelector('a').textContent;
+
+          if (localStorage.getItem('code')) {
+            var code = localStorage.getItem('code');
+            sendCode(
+              code,
+              currentContent,
+              'Baekjoon',
+              codeLanguage,
+              codeRunningTime,
+              algorithmQuestId
+            );
+          }
         }
-        console.log(currentContent);
         preContent = currentContent; // 현재 내용을 저장
       }
     }, 2000);
   } else {
     console.log("이미 제출한 코드입니다.");
   }
-}
-
-function sendCode(textValue, codeLanguage, codeRunningTime, algorithmQuestId) {
-  console.log(textValue);
-
-  let jwt;
-  chrome.storage.local.get("cogit", function (result) {
-    const cogitData = result.cogit;
-    if (cogitData === undefined) {
-      console.log("코깃 데이터 없음");
-      return;
-    }
-    // console.log(cogitData);
-    jwt = cogitData.RefreshToken;
-    console.log(jwt);
-    if (jwt === undefined) {
-      console.log("토큰 없음");
-      return;
-    }
-    if (localStorage.getItem("code")) {
-      var code = localStorage.getItem("code");
-
-      fetch("http://localhost:8080/code", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: jwt,
-        },
-        body: JSON.stringify({
-          algorithmQuestPlatform: "BAEKJOON",
-          algorithmQuestId: algorithmQuestId,
-          codeContent: code,
-          codeResult: textValue,
-          codeRunningTime: codeRunningTime,
-          codeLanguage: codeLanguage,
-        }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.text();
-          } else {
-            throw new Error("코드르 전송하지 못했습니다.");
-          }
-        })
-        .then((data) => {
-          console.log(data);
-        });
-    }
-  });
 }
