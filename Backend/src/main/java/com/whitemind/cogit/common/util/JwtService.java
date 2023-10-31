@@ -88,10 +88,10 @@ public class JwtService {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes()).getEncoded();
     }
 
-    public String extractUserIdFromAccessToken(HttpServletRequest request) throws Exception {
+    public Integer extractMemberIdFromAccessToken(HttpServletRequest request) throws Exception {
         log.info("JwtService_extractUserIdFromAccessToken | Access Token 에서 userCI 추출");
         String accessToken = request.getHeader("Authorization");
-
+        System.out.println(accessToken);
         if(accessToken == null)
             throw new Exception();
 
@@ -100,11 +100,13 @@ public class JwtService {
             // parseClaimsJws : 파싱하여 원본 jws 만들기
             // Claims 는 Map의 구현체 형태
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(this.generateKey()).build().parseClaimsJws(accessToken.split(" ")[1]);
-            return claims.getBody().get("userId", String.class);
+
+            System.out.println(claims);
+            return claims.getBody().get("memberId", Integer.class);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        return "error";
+        return -1;
     }
 
     public boolean validateToken(String accessToken) {
