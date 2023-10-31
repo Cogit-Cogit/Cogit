@@ -1,16 +1,9 @@
-const submitButton = document.getElementById("submit_button");
+const submitButton = document.getElementById('submit_button');
 if (submitButton != null) {
-  submitButton.addEventListener("click", function () {
+  submitButton.addEventListener('click', function () {
     saveCode();
   });
 }
-
-// const radio = document.getElementById('code_open_close');
-// if (radio != null) {
-//   radio.addEventListener('change', function () {
-//     saveCode();
-//   });
-// }
 
 function saveCode() {
   const codeMirrorLines = document.querySelectorAll('.CodeMirror-line');
@@ -24,54 +17,61 @@ function saveCode() {
 
 let solutionElements = document.querySelectorAll('[id^="solution-"]');
 
-let preContent = "";
+let preContent = '';
 if (solutionElements.length > 0) {
   let firstSolutionElement = solutionElements[0];
-  let spanElement = firstSolutionElement.querySelector("span[data-color]");
+  let spanElement = firstSolutionElement.querySelector('span[data-color]');
   preContent = spanElement.textContent;
   console.log(preContent);
   if (
-    preContent.includes("채점 중") ||
-    preContent.includes("기다리는 중") ||
-    preContent.includes("채점 준비 중") ||
-    preContent.includes("중")
+    preContent.includes('채점 중') ||
+    preContent.includes('기다리는 중') ||
+    preContent.includes('채점 준비 중') ||
+    preContent.includes('중')
   ) {
     // 2초 간격으로 내용 확인
     const intervalId = setInterval(function () {
       solutionElements = document.querySelectorAll('[id^="solution-"]');
       firstSolutionElement = solutionElements[0];
-      spanElement = firstSolutionElement.querySelector("span[data-color]");
+      spanElement = firstSolutionElement.querySelector('span[data-color]');
 
       if (spanElement) {
         let currentContent = spanElement.textContent;
 
-        if (currentContent === preContent && !currentContent.includes("중")) {
+        if (currentContent === preContent && !currentContent.includes('중')) {
           clearInterval(intervalId); // setInterval 중지
           let codeLanguage = firstSolutionElement
-            .querySelector("td:nth-child(7)")
-            .querySelector("a").textContent;
-          let codeRunningTime =
-            firstSolutionElement.querySelector(".time").textContent;
+            .querySelector('td:nth-child(7)')
+            .querySelector('a').textContent;
+          let codeRunningTime = firstSolutionElement.querySelector('.time').textContent;
           let algorithmQuestId = firstSolutionElement
             .querySelector('td:nth-child(3)')
             .querySelector('a').textContent;
 
           if (localStorage.getItem('code')) {
             var code = localStorage.getItem('code');
-            sendCode(
-              code,
-              currentContent,
-              'Baekjoon',
-              codeLanguage,
-              codeRunningTime,
-              algorithmQuestId
-            );
+
+            if (
+              currentContent.includes('맞았습니다') ||
+              currentContent.includes('틀렸습니다') ||
+              currentContent.includes('시간 초과') ||
+              currentContent.includes('메모리 초과')
+            ) {
+              sendCode(
+                code,
+                currentContent,
+                'Baekjoon',
+                codeLanguage,
+                codeRunningTime,
+                algorithmQuestId
+              );
+            }
           }
         }
         preContent = currentContent; // 현재 내용을 저장
       }
     }, 2000);
   } else {
-    console.log("이미 제출한 코드입니다.");
+    console.log('이미 제출한 코드입니다.');
   }
 }
