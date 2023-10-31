@@ -14,6 +14,7 @@ module.exports = {
         disabled: '#9CA2AA',
         background: '#F0F7FF',
         hover: '#619FFF',
+        warning: '#FF6161',
       },
       borderRadius: {
         small: '10px',
