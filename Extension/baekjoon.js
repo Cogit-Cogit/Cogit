@@ -65,6 +65,14 @@ if (solutionElements.length > 0) {
                 codeRunningTime,
                 algorithmQuestId
               );
+
+              if (currentContent.includes('맞았습니다')) {
+                var cogitImg = document.createElement('img');
+                cogitImg.src =
+                  'https://hexagonal-locket-e6a.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Ffcee80a5-143a-4e25-9abf-0bcf3a18847d%2Fa1d3c27d-0fc6-41af-bc21-21ea7ef1cdd1%2FUntitled.png?table=block&id=3b2ecac2-d9d7-4e8a-8276-ab83a0fb876f&spaceId=fcee80a5-143a-4e25-9abf-0bcf3a18847d&width=2000&userId=&cache=v2';
+                cogitImg.style = 'width:20px';
+                spanElement.appendChild(cogitImg);
+              }
             }
           }
         }
