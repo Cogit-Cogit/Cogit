@@ -15,6 +15,7 @@ module.exports = {
         background: '#F0F7FF',
         hover: '#619FFF',
         warning: '#FF6161',
+        dim: 'rgba(0, 0, 0, 0.40)',
       },
       borderRadius: {
         small: '10px',
