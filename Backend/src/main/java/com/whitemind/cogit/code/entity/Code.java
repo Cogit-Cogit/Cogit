@@ -41,13 +41,19 @@ public class Code extends BaseEntity {
     @Column(nullable = false)
     private String codeAnalyze;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Language language;
+    @Column(nullable = false, length = 20)
+    private String language;
 
     @Column(nullable = false)
     private float codeRunningTime;
 
     @Column(nullable = false)
     private boolean codeSolved;
+
+    @Column(nullable = false)
+    private String codeFileExtension;
+
+    @Column(nullable = false)
+    private String codeUuid;
+
 }

@@ -17,11 +17,4 @@ public class ExceptionController {
         log.info("Error Message : {}", e.getExceptionCode());
         return ErrorResponseEntity.toResponseEntity(e.getExceptionCode());
     }
-
-    @ExceptionHandler(NotExistMemberException.class)
-    public ResponseResult NotExistAccountException(NotExistMemberException err) {
-        log.info("Error : {}", err.getClass());
-        log.info("Error Message : {}", err.getMessage());
-        return ResponseResult.exceptionResponse(ExceptionCode.NOT_EXIST_MEMBER_EXCEPTION);
-    }
 }
