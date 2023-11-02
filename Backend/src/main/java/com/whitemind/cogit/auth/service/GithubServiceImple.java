@@ -3,7 +3,7 @@ package com.whitemind.cogit.auth.service;
 import com.whitemind.cogit.auth.dto.GitBlobResponseDto;
 import com.whitemind.cogit.auth.dto.GitRefResponseDto;
 import com.whitemind.cogit.code.dto.request.CodeRequest;
-import com.whitemind.cogit.common.util.JwtService;
+import com.whitemind.cogit.common.jwt.JwtService;
 import com.whitemind.cogit.member.dto.UpdateMemberDto;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.repository.MemberRepository;
@@ -53,7 +53,7 @@ public class GithubServiceImple implements GithubService {
         String responseData = getResponse(conn, responseCode, 200);
         JSONObject jObject = new JSONObject(responseData);
 
-        UpdateMemberDto updateMemberDto = new UpdateMemberDto(jObject.getInt("id"), jObject.getString("html_url"), jObject.getString("login"), "", jObject.getString("avatar_url"), accessToken);
+        UpdateMemberDto updateMemberDto = new UpdateMemberDto(jObject.getInt("id"), jObject.getString("html_url"), jObject.getString("login"), jObject.getString("login"),"", jObject.getString("avatar_url"), accessToken);
 
         conn.disconnect();
         return updateMemberDto;
@@ -95,7 +95,7 @@ public class GithubServiceImple implements GithubService {
     @Override
     public void uploadGitCode(CodeRequest code, HttpServletRequest request) throws Exception {
         Member member = memberRepository.findMembersByMemberId(jwtService.extractMemberIdFromAccessToken(request));
-
+        System.out.println(member.getMemberId() + " " + member.getMemberName());
         // 레포가 존재하는지 확인
         if (!getMemberRepo(member)) {
             log.info("getMemberRepo | 유저 코깃코깃 레포가 존재하지 않습니다.");

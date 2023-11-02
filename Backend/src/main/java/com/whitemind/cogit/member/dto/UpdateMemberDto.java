@@ -22,6 +22,8 @@ public class UpdateMemberDto {
 
     private String memberName;
 
+    private String memberNickname;
+
     private String memberRefreshToken;
 
     private String memberProfileImage;
@@ -37,6 +39,7 @@ public class UpdateMemberDto {
                 .memberId(memberId)
                 .memberGitUrl(memberGitUrl)
                 .memberName(memberName)
+                .memberNickname(memberNickname)
                 .memberRefreshToken(memberRefreshToken)
                 .memberProfileImage(memberProfileImage)
                 .memberGitAccessToken(memberGitAccessToken)
