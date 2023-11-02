@@ -58,4 +58,8 @@ public class Member {
     public void updateNickname(String memberName) {
         this.memberName = memberName;
     }
+    //프로필 이미지 수정
+    public void updateProfileImage(String memberProfileImage){
+        this.memberProfileImage = memberProfileImage;
+    }
 }
