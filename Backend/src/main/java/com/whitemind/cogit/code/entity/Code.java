@@ -4,9 +4,9 @@ import com.whitemind.cogit.common.entity.BaseEntity;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.schedule.entity.AlgorithmQuest;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@SuperBuilder(toBuilder = true)
+@Builder(toBuilder = true)
 @Table(name = "code", indexes = @Index(name = "idx_algorithm_quest_member", columnList = "algorithm_quest_id, algorithm_quest_platform, member_id"))
 public class Code extends BaseEntity {
     @Id
@@ -41,6 +41,7 @@ public class Code extends BaseEntity {
     @Column(nullable = false)
     private String codeAnalyze;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Language language;
 

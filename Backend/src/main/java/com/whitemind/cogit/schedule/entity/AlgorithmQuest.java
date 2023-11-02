@@ -3,6 +3,7 @@ package com.whitemind.cogit.schedule.entity;
 import com.whitemind.cogit.code.entity.Code;
 import com.whitemind.cogit.common.entity.BaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@SuperBuilder(toBuilder = true)
+@Builder(toBuilder = true)
 @Table(name = "algorithm_quest")
 public class AlgorithmQuest {
     @EmbeddedId

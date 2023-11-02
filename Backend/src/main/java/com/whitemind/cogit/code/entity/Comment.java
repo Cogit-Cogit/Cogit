@@ -3,9 +3,9 @@ package com.whitemind.cogit.code.entity;
 import com.whitemind.cogit.common.entity.BaseEntity;
 import com.whitemind.cogit.member.entity.Member;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@SuperBuilder(toBuilder = true)
+@Builder(toBuilder = true)
 @Table(name = "comment", indexes = @Index(name = "idx_code_member", columnList = "code_id, member_id"))
 public class Comment extends BaseEntity {
     @Id
