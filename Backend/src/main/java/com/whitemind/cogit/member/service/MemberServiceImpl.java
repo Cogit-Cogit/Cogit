@@ -1,6 +1,7 @@
 package com.whitemind.cogit.member.service;
 
 import com.whitemind.cogit.common.S3.service.S3UploadService;
+import com.whitemind.cogit.member.dto.GetMemberListDto;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,5 +33,11 @@ public class MemberServiceImpl implements MemberService{
         String imageUrl = s3UploadService.saveFile(imageFile);
         member.updateProfileImage(imageUrl);
         memberRepository.save(member);
+    }
+
+    @Override
+    public List<GetMemberListDto> getMemberList() {
+        List<Member> memberList = memberRepository.findAll();
+        return memberList.stream().map(member -> member.toGetMemberListDto()).collect(Collectors.toList());
     }
 }

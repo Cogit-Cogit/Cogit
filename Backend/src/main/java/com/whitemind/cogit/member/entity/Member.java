@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import com.whitemind.cogit.code.entity.Code;
 import com.whitemind.cogit.code.entity.Comment;
 import com.whitemind.cogit.common.entity.BaseEntity;
+import com.whitemind.cogit.member.dto.GetMemberListDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,5 +62,15 @@ public class Member {
     //프로필 이미지 수정
     public void updateProfileImage(String memberProfileImage){
         this.memberProfileImage = memberProfileImage;
+    }
+
+    public GetMemberListDto toGetMemberListDto() {
+        return GetMemberListDto.builder()
+                .memberId(memberId)
+                .memberGitUrl(memberGitUrl)
+                .memberNickname(memberNickname)
+                .memberName(memberName)
+                .memberProfileImage(memberProfileImage)
+                .build();
     }
 }
