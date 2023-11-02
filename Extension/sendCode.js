@@ -1,40 +1,42 @@
 function sendCode(
   codeContent,
-  codeResult,
+  codeSolved,
   algorithmQuestPlatform,
   codeLanguage,
   codeRunningTime,
-  algorithmQuestId
+  algorithmQuestId,
+  codeFileExtension
 ) {
   let jwt;
-  chrome.storage.local.get("cogit", function (result) {
+  chrome.storage.local.get('cogit', function (result) {
     const cogitData = result.cogit;
 
     if (cogitData === undefined) {
-      console.log("코깃 데이터 없음");
+      console.log('코깃 데이터 없음');
       return;
     }
 
     jwt = cogitData.Authorization;
     if (jwt === undefined) {
-      console.log("토큰 없음");
+      console.log('토큰 없음');
       return;
     }
 
     function executeRequestWithToken(token) {
-      fetch("http://localhost:8080/code", {
-        method: "POST",
+      fetch('http://localhost:8080/code', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: token,
         },
         body: JSON.stringify({
           algorithmQuestPlatform: algorithmQuestPlatform,
           algorithmQuestId: algorithmQuestId,
           codeContent: codeContent,
-          codeResult: codeResult,
+          codeSolved: codeSolved,
           codeRunningTime: codeRunningTime,
           codeLanguage: codeLanguage,
+          codeFileExtension: codeFileExtension,
         }),
       })
         .then((response) => {
@@ -52,10 +54,10 @@ function sendCode(
                   executeRequestWithToken(newToken);
                 })
                 .catch((error) => {
-                  throw new Error("토큰을 갱신하지 못했습니다.");
+                  throw new Error('토큰을 갱신하지 못했습니다.');
                 });
             } else {
-              throw new Error("코드를 전송하지 못했습니다.");
+              throw new Error('코드를 전송하지 못했습니다.');
             }
           }
         })

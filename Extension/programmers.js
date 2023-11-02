@@ -6,12 +6,12 @@ if (submitButton != null) {
 }
 
 function saveCode() {
-  const codeLanguage = document.getElementById('tour7').querySelector('button').textContent.trim();
+  let codeLanguage = document.getElementById('tour7').querySelector('button').textContent.trim();
+  codeLanguage = programmersLanguages[codeLanguage];
+  let codeFileExtension = programmersExtension[codeLanguage];
 
   const codeMirrorLines = document.querySelectorAll('.CodeMirror-line');
-
   const linesContent = Array.from(codeMirrorLines).map((line) => line.textContent);
-
   const codeContent = linesContent.join('\n');
 
   let codeResult = document.querySelector('.modal-title');
@@ -29,6 +29,8 @@ function saveCode() {
     if (codeResult && !codeResult.includes('로딩중')) {
       clearInterval(intervalId);
 
+      let result = false;
+
       if (codeResult.includes('정답')) {
         const timeElements = document.querySelectorAll('.console-test-group td.result.passed');
         const runTimes = [];
@@ -40,15 +42,17 @@ function saveCode() {
           }
         }
         codeRunningTime = runTimes.reduce((acc, value) => acc + value, 0) / runTimes.length;
+        result = true;
       }
 
       sendCode(
         codeContent,
-        codeResult,
-        'Programmers',
+        result,
+        'PROGRAMMERS',
         codeLanguage,
         codeRunningTime,
-        algorithmQuestId
+        algorithmQuestId,
+        codeFileExtension
       );
     }
   }, 2000);
