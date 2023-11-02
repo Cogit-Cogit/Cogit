@@ -16,9 +16,10 @@ function parseAccessCode(url) {
 function requestCogitLogin(code) {
   console.log("parameter", code);
 
-  fetch(`http://localhost:8080/member/github?code=${code}`, {
+  fetch(`http://localhost:8080/auth/regist?code=${code}`, {
     method: "GET",
   }).then((response) => {
+    console.log(response);
     // 응답헤어 로큰 익스텐션 로컬스토리지 저장
     console.log(response.headers.get("Authorization"));
     chrome.storage.local.set(
@@ -33,7 +34,7 @@ function requestCogitLogin(code) {
         chrome.storage.local.get("cogit", (data) => {
           console.log(data);
         });
-        window.close();
+        // window.close();
       }
     );
   });
@@ -51,5 +52,57 @@ if (window.location.host === "github.com") {
 
       chrome.storage.local.remove("pipe_cogit");
     }
+  });
+}
+
+function refreshAccessToken() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get("cogit", function (result) {
+      const cogitData = result.cogit;
+
+      if (!cogitData || !cogitData.RefreshToken) {
+        console.log("리프레시 토큰이 없습니다.");
+        reject("리프레시 토큰이 없습니다.");
+        return;
+      }
+
+      const refreshToken = cogitData.RefreshToken;
+
+      fetch("http://localhost:8080/auth/refresh", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          RefreshToken: refreshToken,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("리프레시 토큰 요청에 실패했습니다.");
+          }
+          console.log(response);
+
+          const newAuthorization = response.headers.get("Authorization");
+
+          chrome.storage.local.set(
+            {
+              cogit: {
+                ...cogitData,
+                Authorization: newAuthorization,
+              },
+            },
+            () => {
+              // 저장되었는지 확인
+              chrome.storage.local.get("cogit", (data) => {
+                console.log(data);
+                resolve(newAuthorization); // Promise에 새로운 토큰 반환
+              });
+            }
+          );
+        })
+        .catch((error) => {
+          console.error(error);
+          reject(error); // Promise 실패
+        });
+    });
   });
 }
