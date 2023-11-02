@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@DynamicInsert
 @SuperBuilder(toBuilder = true)
 @Table(name = "member")
 public class Member {
@@ -23,15 +26,20 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int memberId;
 
+    @Column(nullable = false, length = 320)
     private String memberGitUrl;
 
+    @Column(nullable = false, length = 20)
     private String memberName;
 
     private String memberRefreshToken;
 
-    private String memberGitAvatarUrl;
+    private String memberProfileImage;
 
     private String memberGitAccessToken;
+
+    @Column(nullable = false, length = 20)
+    private String memberNickname;
 
     @OneToMany(mappedBy = "member")
     private List<Code> codeList;

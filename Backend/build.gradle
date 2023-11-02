@@ -56,8 +56,11 @@ dependencies {
     // json parser
     implementation 'org.json:json:20190722'
 
+
     //S3
-//    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation platform('software.amazon.awssdk:bom:2.17.230')
+    implementation 'software.amazon.awssdk:s3'
 }
 
 def querydslDir = "$buildDir/generated/querydsl"
