@@ -5,7 +5,8 @@ function sendCode(
   codeLanguage,
   codeRunningTime,
   algorithmQuestId,
-  codeFileExtension
+  codeFileExtension,
+  algorithmQuestUrl
 ) {
   let jwt;
   chrome.storage.local.get('cogit', function (result) {
@@ -21,9 +22,8 @@ function sendCode(
       console.log('토큰 없음');
       return;
     }
-
     function executeRequestWithToken(token) {
-      fetch('http://localhost:8080/code', {
+      fetch('http://localhost:8080/code/commit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,6 +37,7 @@ function sendCode(
           codeRunningTime: codeRunningTime,
           codeLanguage: codeLanguage,
           codeFileExtension: codeFileExtension,
+          algorithmQuestUrl: algorithmQuestUrl,
         }),
       })
         .then((response) => {
