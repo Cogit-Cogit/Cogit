@@ -1,0 +1,1 @@
+package com.whitemind.cogit.member.service;public interface StudyService {	void createStudy(String name);}
