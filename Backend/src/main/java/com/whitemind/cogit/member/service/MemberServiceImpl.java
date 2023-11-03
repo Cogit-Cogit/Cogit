@@ -1,7 +1,7 @@
 package com.whitemind.cogit.member.service;
 
 import com.whitemind.cogit.common.S3.service.S3UploadService;
-import com.whitemind.cogit.member.dto.response.GetMemberListResponse;
+import com.whitemind.cogit.member.dto.response.GetMemberResponse;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public List<GetMemberListResponse> getMemberList() {
+    public List<GetMemberResponse> getMemberList() {
         List<Member> memberList = memberRepository.findAll();
         return memberList.stream().map(member -> member.toGetMemberListResponse()).collect(Collectors.toList());
     }

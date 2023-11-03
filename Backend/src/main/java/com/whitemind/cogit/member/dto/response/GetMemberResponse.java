@@ -7,7 +7,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class GetMemberListResponse {
+public class GetMemberResponse {
     private int memberId;
 
     private String memberGitUrl;

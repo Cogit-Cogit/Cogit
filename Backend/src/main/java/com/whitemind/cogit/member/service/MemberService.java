@@ -1,6 +1,6 @@
 package com.whitemind.cogit.member.service;
 
-import com.whitemind.cogit.member.dto.response.GetMemberListResponse;
+import com.whitemind.cogit.member.dto.response.GetMemberResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,5 +12,5 @@ public interface MemberService {
 
     void modifyProfileImage(MultipartFile imageFile, HttpServletRequest request) throws IOException;
 
-    List<GetMemberListResponse> getMemberList();
+    List<GetMemberResponse> getMemberList();
 }
