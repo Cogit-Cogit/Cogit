@@ -168,7 +168,7 @@ public class GithubServiceImple implements GithubService {
         HttpURLConnection conn = requestGitAPIConnection(member, url, "POST");
 
         JSONObject jsonRequest = new JSONObject();
-        jsonRequest.put("message", code.getAlgorithmQuestPlatform() + code.getAlgorithmQuestId());
+        jsonRequest.put("message", code.getAlgorithmQuestPlatform() + code.getAlgorithmQuestNumber());
         jsonRequest.put("tree", treeSha);
         jsonRequest.put("parents", new String[]{ refSha });
         // HTTP 요청 body에 JSON 객체 전달
@@ -222,7 +222,7 @@ public class GithubServiceImple implements GithubService {
         JSONObject jObject = new JSONObject(responseData);
 
         // TODO 문제 저장할 정확한 주소 정해야함
-        return new GitBlobResponseDto(code.getAlgorithmQuestPlatform() + "/" +code.getAlgorithmQuestId(), jObject.getString("sha"), "100644", "blob");
+        return new GitBlobResponseDto(code.getAlgorithmQuestPlatform() + "/" +code.getAlgorithmQuestNumber(), jObject.getString("sha"), "100644", "blob");
     }
 
     public GitRefResponseDto getRef(Member member) throws IOException {

@@ -29,9 +29,6 @@ public class Schedule {
 
     private Date scheduleEndAt;
 
-    @OneToMany(mappedBy = "schedule")
-    private List<ScheduleAlgorithmQuest> scheduleAlgorithmQuestList;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Team team;

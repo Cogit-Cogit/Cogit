@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder(toBuilder = true)
-@Table(name = "code", indexes = @Index(name = "idx_algorithm_quest_member", columnList = "algorithm_quest_id, algorithm_quest_platform, member_id"))
+@Table(name = "code", indexes = @Index(name = "idx_member_algorithm_quest", columnList = "algorithm_quest_id, member_id"))
 public class Code extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +26,7 @@ public class Code extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns(value = {
-            @JoinColumn(name = "algorithm_quest_id", nullable = false),
-            @JoinColumn(name = "algorithm_quest_platform", nullable = false)
-    }, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "algorithm_quest_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private AlgorithmQuest algorithmQuest;
 
     @OneToMany(mappedBy = "code")
