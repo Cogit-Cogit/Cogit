@@ -2,7 +2,16 @@ package com.whitemind.cogit.member.entity;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Builder(toBuilder = true)
 @Table(indexes = @Index(name="idx_member_team", columnList = "member_id, team_id"))
 public class MemberTeam {
     @Id
