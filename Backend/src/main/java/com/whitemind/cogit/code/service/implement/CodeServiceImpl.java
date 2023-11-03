@@ -1,18 +1,14 @@
 package com.whitemind.cogit.code.service.implement;
 
-import com.querydsl.core.QueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.whitemind.cogit.code.dto.request.CodeRequest;
-import com.whitemind.cogit.code.entity.Code;
 import com.whitemind.cogit.code.repository.CodeRepository;
 import com.whitemind.cogit.code.service.CodeService;
 import com.whitemind.cogit.common.error.CustomException;
 import com.whitemind.cogit.common.error.ExceptionCode;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
-import com.whitemind.cogit.member.entity.QMember;
 import com.whitemind.cogit.member.repository.MemberRepository;
-import com.whitemind.cogit.schedule.entity.AlgorithmQuest;
 import com.whitemind.cogit.schedule.entity.AlgorithmQuestPlatform;
 import com.whitemind.cogit.schedule.repository.AlgorithmQuestRepository;
 import lombok.RequiredArgsConstructor;
