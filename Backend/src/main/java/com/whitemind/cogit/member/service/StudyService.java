@@ -1,1 +1,1 @@
-package com.whitemind.cogit.member.service;public interface StudyService {	void createStudy(String name);}
+package com.whitemind.cogit.member.service;import javax.servlet.http.HttpServletRequest;import com.whitemind.cogit.member.dto.request.AddMemberRequest;public interface StudyService {	void createStudy(String name, int request);	void addMember(AddMemberRequest addMember, int memberId);}
