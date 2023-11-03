@@ -1,0 +1,1 @@
+package com.whitemind.cogit.member.entity.request;import lombok.AllArgsConstructor;import lombok.Getter;import lombok.NoArgsConstructor;@AllArgsConstructor@NoArgsConstructor@Getterpublic class CreateStudyRequest {	private String studyName;}
