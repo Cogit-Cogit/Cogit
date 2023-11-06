@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -18,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScheduleController {
     private final ScheduleService scheduleService;
     @PostMapping("/add")
-    public ResponseResult createStudySchetule(@RequestBody CreateScheduleRequest schedule) throws Exception {
+    public ResponseResult createStudySchetule(@RequestBody CreateScheduleRequest schedule, HttpServletRequest request) throws Exception {
         log.info("createStudySchetule | Study 스케줄 생성 요청");
-        scheduleService.createSchedule(schedule);
+        scheduleService.createSchedule(schedule, request);
         return ResponseResult.successResponse;
     }
 }

@@ -1,10 +1,18 @@
 package com.whitemind.cogit.member.entity;
 
 import com.whitemind.cogit.schedule.entity.AlgorithmQuest;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Builder(toBuilder = true)
 @Table(indexes = @Index(name="idx_member_algorithm_quest", columnList = "member_id, algorithm_quest_id"))
 public class MemberAlgorithmQuest {
     @Id
