@@ -2,11 +2,13 @@ package com.whitemind.cogit.code.service.implement;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.whitemind.cogit.code.dto.request.CodeRequest;
+import com.whitemind.cogit.code.dto.response.CodeDetailResponse;
 import com.whitemind.cogit.code.entity.Code;
 import com.whitemind.cogit.code.repository.CodeRepository;
 import com.whitemind.cogit.code.service.CodeService;
 import com.whitemind.cogit.common.error.CustomException;
 import com.whitemind.cogit.common.error.ExceptionCode;
+import com.whitemind.cogit.member.dto.QMember;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
 import com.whitemind.cogit.member.entity.Team;
@@ -117,6 +119,25 @@ public class CodeServiceImpl implements CodeService {
 
             codeRepository.save(code);
         }
+    }
+
+    @Override
+    public CodeDetailResponse getCodeDetail(int codeId) {
+        Code code = codeRepository.findById(codeId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_CODE_EXCEPTION));
+
+        return CodeDetailResponse.builder()
+                .codeId(codeId)
+                .algorithmQuestId(code.getAlgorithmQuest().getAlgorithmQuestId())
+                .codeContent(code.getCodeContent())
+                .memberId(code.getMember().getMemberId())
+                .algorithmQuestPlatform(code.getAlgorithmQuest().getAlgorithmQuestPlatform().toString())
+                .createAt(LocalDate.from(code.getCreatedAt()))
+                .codeAnalyze(code.getCodeAnalyze())
+                .codeLanguage(code.getLanguage())
+                .codeRunningTime(code.getCodeRunningTime())
+                .codeSolved(false) // TODO
+                .build();
     }
 
     public void saveCodeToDatabase() {
