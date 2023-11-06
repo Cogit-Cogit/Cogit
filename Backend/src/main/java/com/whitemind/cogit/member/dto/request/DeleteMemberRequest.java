@@ -1,0 +1,1 @@
+package com.whitemind.cogit.member.dto.request;import lombok.Getter;@Getterpublic class DeleteMemberRequest {	private int memberId;	private int teamId;}
