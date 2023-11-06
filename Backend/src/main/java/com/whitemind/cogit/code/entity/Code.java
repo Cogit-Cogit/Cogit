@@ -32,7 +32,7 @@ public class Code extends BaseEntity {
     @OneToMany(mappedBy = "code")
     private List<Comment> commentList;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String codeContent;
 
     @Column(nullable = false)

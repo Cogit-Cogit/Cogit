@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder(toBuilder = true)
-@Table(name = "algorithm_quest")
+@Table(name = "algorithm_quest", indexes = @Index(name = "idx_algorithm_quest", columnList = "algorithmQuestNumber, algorithmQuestPlatform"))
 public class AlgorithmQuest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

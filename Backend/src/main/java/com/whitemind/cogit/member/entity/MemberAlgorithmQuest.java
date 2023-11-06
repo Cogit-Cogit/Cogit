@@ -29,4 +29,8 @@ public class MemberAlgorithmQuest {
 
     @Column(nullable = false)
     private boolean memberAlgorithmQuestSolved;
+
+    public void checkSolved() {
+        this.memberAlgorithmQuestSolved = true;
+    }
 }
