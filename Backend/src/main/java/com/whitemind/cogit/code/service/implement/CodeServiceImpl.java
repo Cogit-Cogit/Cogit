@@ -1,8 +1,8 @@
 package com.whitemind.cogit.code.service.implement;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.whitemind.cogit.code.dto.request.CodeRequest;
 import com.whitemind.cogit.code.dto.response.CodeDetailResponse;
+import com.whitemind.cogit.code.dto.response.GetCodeHistoryResponse;
 import com.whitemind.cogit.code.entity.Code;
 import com.whitemind.cogit.code.repository.CodeRepository;
 import com.whitemind.cogit.code.service.CodeService;
@@ -11,10 +11,8 @@ import com.whitemind.cogit.common.error.ExceptionCode;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
 import com.whitemind.cogit.member.entity.MemberTeam;
-import com.whitemind.cogit.member.entity.Team;
 import com.whitemind.cogit.member.repository.MemberAlgorithmQuestRepository;
 import com.whitemind.cogit.member.repository.MemberRepository;
-import com.whitemind.cogit.member.repository.TeamRepository;
 import com.whitemind.cogit.schedule.entity.AlgorithmQuest;
 import com.whitemind.cogit.schedule.entity.AlgorithmQuestPlatform;
 import com.whitemind.cogit.schedule.entity.Schedule;
@@ -25,24 +23,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class CodeServiceImpl implements CodeService {
-    private final EntityManager em;
     private final CodeRepository codeRepository;
     private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
-    private final TeamRepository teamRepository;
     private final AlgorithmQuestRepository algorithmQuestRepository;
     private final MemberAlgorithmQuestRepository memberAlgorithmQuestRepository;
-    private final JPAQueryFactory queryFactory;
 
 
     @Override
@@ -151,6 +145,35 @@ public class CodeServiceImpl implements CodeService {
                 .codeRunningTime(code.getCodeRunningTime())
                 .codeSolved(false) // TODO
                 .build();
+    }
+
+    @Override
+    public List<GetCodeHistoryResponse> getCodeHisttory(int memberId, int scheduleId) {
+        Schedule schedule = scheduleRepository.findByScheduleId(scheduleId);
+
+        List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findAlgorithmQuestsBySchedule(schedule);
+
+        List<GetCodeHistoryResponse> getCodeHistoryResponseList = new ArrayList<>();
+
+        // AlgorithmQuest 조회
+        for (AlgorithmQuest quest: algorithmQuestList) {
+            // memberAlgorithmQuest 조회
+            for (MemberAlgorithmQuest memberAlgorithmQuest: quest.getMemberAlgorithmQuestList()) {
+                // member Code 조회
+                for (Code code : memberAlgorithmQuest.getMember().getCodeList()) {
+                    getCodeHistoryResponseList
+                        .add(GetCodeHistoryResponse
+                        .builder()
+                        .codeId(code.getCodeId())
+                        .codeLanguage(code.getLanguage())
+                        .codeRunningTime(code.getCodeRunningTime())
+                        .codeSolved(code.isCodeSolved())
+                        .build());
+                }
+            }
+        }
+
+        return getCodeHistoryResponseList;
     }
 
     public void saveCodeToDatabase() {
