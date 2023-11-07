@@ -28,8 +28,11 @@ export default function RootLayout({ children }) {
     <html lang="ko" className={tMoney.className}>
       <body>
         <Header />
-        <Sidebar />
-        {children}</body>
+        <div className="flex">
+          <Sidebar />
+          <div className="w-full bg-background">{children}</div>
+        </div>
+      </body>
     </html>
   );
 }

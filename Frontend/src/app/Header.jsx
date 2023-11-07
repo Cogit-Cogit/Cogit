@@ -9,7 +9,7 @@ function Header() {
   const isLogin = true;
 
   return (
-    <nav className="fixed top-0 left-0 z-20 flex items-center justify-between w-full p-4 bg-white shadow-md">
+    <nav className="flex items-center justify-between w-full p-4 bg-white drop-shadow-md h-[7vh]">
       <Link href="/">
         <Logo alt="코깃코깃" width={135} height={36} />
       </Link>
