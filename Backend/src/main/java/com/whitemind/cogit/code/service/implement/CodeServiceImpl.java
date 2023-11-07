@@ -8,9 +8,9 @@ import com.whitemind.cogit.code.repository.CodeRepository;
 import com.whitemind.cogit.code.service.CodeService;
 import com.whitemind.cogit.common.error.CustomException;
 import com.whitemind.cogit.common.error.ExceptionCode;
-import com.whitemind.cogit.member.dto.QMember;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
+import com.whitemind.cogit.member.entity.MemberTeam;
 import com.whitemind.cogit.member.entity.Team;
 import com.whitemind.cogit.member.repository.MemberAlgorithmQuestRepository;
 import com.whitemind.cogit.member.repository.MemberRepository;
@@ -64,7 +64,18 @@ public class CodeServiceImpl implements CodeService {
             if(memberAlgorithmQuest.getAlgorithmQuest().getAlgorithmQuestNumber() == codeRequest.getAlgorithmQuestNumber()) {
                 if(!memberAlgorithmQuest.getAlgorithmQuest().getSchedule().getScheduleEndAt().isBefore(LocalDate.now())) {
                     if(codeRequest.isCodeSolved()) {
+                        // 해당 문제가 아직 해결되지 않았을 때
                         if(!memberAlgorithmQuest.isMemberAlgorithmQuestSolved()) {
+
+                            List<MemberTeam> memberTeamList = memberAlgorithmQuest.getAlgorithmQuest().getSchedule().getTeam().getMemberTeamList();
+
+
+                            for (MemberTeam memberTeam : memberTeamList) {
+                                if (memberTeam.getMember().getMemberId() == memberId) {
+                                    log.info("saveCode | 문제 풀이 성공, 포인트 적립");
+                                    memberTeam.addSovledQuest(memberAlgorithmQuest.getAlgorithmQuest().getSchedule().getScheduleStartAt());
+                                }
+                            }
                             memberAlgorithmQuest.checkSolved();
                         }
                     }
@@ -103,6 +114,8 @@ public class CodeServiceImpl implements CodeService {
             memberAlgorithmQuestRepository.save(memberAlgorithmQuest);
             currentSchedule.add(algorithmQuest);
         }
+
+
 
         for(AlgorithmQuest aq : currentSchedule) {
             code = Code.builder()
