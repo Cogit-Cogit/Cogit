@@ -32,7 +32,8 @@ public class AuthServiceImpl implements AuthService{
         String accessToken = githubService.getAccessToken(code);
         UpdateMemberDto updateMemberDto = githubService.getGithubUserInfo(accessToken);
         JWT jwt = jwtService.createAccessToken("memberId",updateMemberDto.getMemberId()); // key, value
-        updateMemberDto.setMemberRefreshToken(jwt.getRefreshToken());
+        if (updateMemberDto.getMemberRefreshToken().equals(""))
+            updateMemberDto.setMemberRefreshToken(jwt.getRefreshToken());
         memberRepository.save(updateMemberDto.toMemberEntity());
         setToken(jwt, response);
     }
