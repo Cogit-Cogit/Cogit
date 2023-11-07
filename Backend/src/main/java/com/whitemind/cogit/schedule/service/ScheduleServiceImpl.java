@@ -2,7 +2,6 @@ package com.whitemind.cogit.schedule.service;
 
 import com.whitemind.cogit.common.error.CustomException;
 import com.whitemind.cogit.common.error.ExceptionCode;
-import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
 import com.whitemind.cogit.member.entity.MemberTeam;
 import com.whitemind.cogit.member.entity.Team;
@@ -12,6 +11,7 @@ import com.whitemind.cogit.member.repository.MemberTeamRepository;
 import com.whitemind.cogit.member.repository.TeamRepository;
 import com.whitemind.cogit.schedule.dto.GetMemberAlgorithmQuestDto;
 import com.whitemind.cogit.schedule.dto.GetScheduleDto;
+import com.whitemind.cogit.schedule.dto.request.AddQuestRequest;
 import com.whitemind.cogit.schedule.dto.request.CreateScheduleRequest;
 import com.whitemind.cogit.schedule.dto.response.GetAlgorithmQuestResponse;
 import com.whitemind.cogit.schedule.dto.response.GetStudyDetailResponse;
@@ -56,38 +56,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                 .team(study).build();
         scheduleRepository.save(schedule);
 
-
-        // Member member = memberRepository.findMembersByMemberId((Integer) request.getAttribute("memberId"));
-
-        // 해당 스케줄에 각 문제 등록
-        for (String questUrl : scheduleRequest.getAlgorithmQuestList()){
-            String [] questNumber = questUrl.split("/");
-
-            String number = questNumber[questNumber.length - 1];
-
-            // 문제 URL 이상 여부 판단
-            if (!(questUrl.contains("programmers") || questUrl.contains("acmicpc")))
-                throw new CustomException(ExceptionCode.NOT_EXIST_ALGORITHM_PLATFORM_EXCEPTION);
-
-
-
-            AlgorithmQuest algorithmQuest = AlgorithmQuest.builder()
-                    .algorithmQuestNumber(Integer.parseInt(number))
-                    .algorithmQuestUrl(questUrl)
-                    .algorithmQuestPlatform((questUrl.contains("programmers") ? AlgorithmQuestPlatform.PROGRAMMERS : AlgorithmQuestPlatform.BAEKJOON))
-                    .schedule(schedule)
-                    .build();
-            algorithmQuestRepository.save(algorithmQuest);
-
-            List<MemberTeam> memberTeams = memberTeamRepository.findByTeamTeamId(scheduleRequest.getStudyId());
-            for (MemberTeam memberTeam: memberTeams) {
-                MemberAlgorithmQuest memberAlgorithmQuest = MemberAlgorithmQuest.builder()
-                        .algorithmQuest(algorithmQuest)
-                        .member(memberTeam.getMember())
-                        .build();
-                memberAlgorithmQuestRepository.save(memberAlgorithmQuest);
-            }
-        }
+        AddQuestToSchedule(scheduleRequest.getAlgorithmQuestList(), schedule, scheduleRequest.getStudyId());
     }
 
     @Override
@@ -150,5 +119,44 @@ public class ScheduleServiceImpl implements ScheduleService{
         }
 
         return getAlgorithmQuestResponses;
+    }
+
+    @Override
+    public void AddQuest(AddQuestRequest addQuestRequest) {
+        Schedule schedule = scheduleRepository.findByScheduleId(addQuestRequest.getScheduleId());
+        // 문제 등록
+        AddQuestToSchedule(addQuestRequest.getAlgorithmQuestList(), schedule, addQuestRequest.getScheduleId());
+    }
+
+    public void AddQuestToSchedule(List<String> algorithmQuestList, Schedule schedule, int studyId){
+        // 해당 스케줄에 각 문제 등록
+        for (String questUrl : algorithmQuestList){
+            String [] questNumber = questUrl.split("/");
+
+            String number = questNumber[questNumber.length - 1];
+
+            // 문제 URL 이상 여부 판단
+            if (!(questUrl.contains("programmers") || questUrl.contains("acmicpc")))
+                throw new CustomException(ExceptionCode.NOT_EXIST_ALGORITHM_PLATFORM_EXCEPTION);
+
+
+
+            AlgorithmQuest algorithmQuest = AlgorithmQuest.builder()
+                    .algorithmQuestNumber(Integer.parseInt(number))
+                    .algorithmQuestUrl(questUrl)
+                    .algorithmQuestPlatform((questUrl.contains("programmers") ? AlgorithmQuestPlatform.PROGRAMMERS : AlgorithmQuestPlatform.BAEKJOON))
+                    .schedule(schedule)
+                    .build();
+            algorithmQuestRepository.save(algorithmQuest);
+
+            List<MemberTeam> memberTeams = memberTeamRepository.findByTeamTeamId(studyId);
+            for (MemberTeam memberTeam: memberTeams) {
+                MemberAlgorithmQuest memberAlgorithmQuest = MemberAlgorithmQuest.builder()
+                        .algorithmQuest(algorithmQuest)
+                        .member(memberTeam.getMember())
+                        .build();
+                memberAlgorithmQuestRepository.save(memberAlgorithmQuest);
+            }
+        }
     }
 }

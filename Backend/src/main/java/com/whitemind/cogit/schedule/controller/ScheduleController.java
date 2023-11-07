@@ -6,6 +6,7 @@ import com.whitemind.cogit.common.response.ListResponseResult;
 import com.whitemind.cogit.common.response.ResponseResult;
 import com.whitemind.cogit.common.response.SingleResponseResult;
 import com.whitemind.cogit.member.dto.request.CreateStudyRequest;
+import com.whitemind.cogit.schedule.dto.request.AddQuestRequest;
 import com.whitemind.cogit.schedule.dto.request.CreateScheduleRequest;
 import com.whitemind.cogit.schedule.dto.response.GetAlgorithmQuestResponse;
 import com.whitemind.cogit.schedule.dto.response.GetStudyDetailResponse;
@@ -42,5 +43,11 @@ public class ScheduleController {
     @GetMapping()
     public ListResponseResult getScheduleDetail(int scheduleId, HttpServletRequest request) throws Exception {
         return new ListResponseResult<GetAlgorithmQuestResponse>(scheduleService.getScheduleDetail(scheduleId, request));
+    }
+
+    @PostMapping("/quest/add")
+    public ResponseResult addQuesttoSchedule(@RequestBody AddQuestRequest addQuestRequest) {
+        scheduleService.AddQuest(addQuestRequest);
+        return SingleResponseResult.successResponse;
     }
 }

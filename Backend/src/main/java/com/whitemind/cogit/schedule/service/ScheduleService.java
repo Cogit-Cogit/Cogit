@@ -2,6 +2,7 @@ package com.whitemind.cogit.schedule.service;
 
 import java.util.List;
 
+import com.whitemind.cogit.schedule.dto.request.AddQuestRequest;
 import com.whitemind.cogit.schedule.dto.request.CreateScheduleRequest;
 import com.whitemind.cogit.schedule.dto.response.GetAlgorithmQuestResponse;
 import com.whitemind.cogit.schedule.dto.response.GetStudyDetailResponse;
@@ -16,4 +17,5 @@ public interface ScheduleService {
 
     List<GetAlgorithmQuestResponse> getScheduleDetail(int scheduleId, HttpServletRequest request);
 
+    void AddQuest(AddQuestRequest addQuestRequest);
 }
