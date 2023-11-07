@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
         <Header />
         <div className="flex">
           <Sidebar />
-          <div className="w-full bg-background">{children}</div>
+          <div className="w-full bg-[#F4F6FA]">{children}</div>
         </div>
       </body>
     </html>
