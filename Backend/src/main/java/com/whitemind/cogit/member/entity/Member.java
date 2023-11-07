@@ -1,14 +1,12 @@
 package com.whitemind.cogit.member.entity;
 
-import com.sun.istack.NotNull;
 import com.whitemind.cogit.code.entity.Code;
 import com.whitemind.cogit.code.entity.Comment;
-import com.whitemind.cogit.common.entity.BaseEntity;
+import com.whitemind.cogit.member.dto.response.GetMemberResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -23,7 +21,6 @@ import java.util.List;
 @Table(name = "member")
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int memberId;
 
     @Column(nullable = false, length = 320)
@@ -57,5 +54,19 @@ public class Member {
     //닉네임 수정
     public void updateNickname(String memberName) {
         this.memberName = memberName;
+    }
+    //프로필 이미지 수정
+    public void updateProfileImage(String memberProfileImage){
+        this.memberProfileImage = memberProfileImage;
+    }
+
+    public GetMemberResponse toGetMemberListResponse() {
+        return GetMemberResponse.builder()
+                .memberId(memberId)
+                .memberGitUrl(memberGitUrl)
+                .memberNickname(memberNickname)
+                .memberName(memberName)
+                .memberProfileImage(memberProfileImage)
+                .build();
     }
 }

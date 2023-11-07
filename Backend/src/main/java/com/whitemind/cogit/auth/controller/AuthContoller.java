@@ -29,13 +29,13 @@ public class AuthContoller {
     public ResponseResult refreshMemberRequest(@RequestParam String code, HttpServletResponse response) throws Exception {
         log.info("getAccessTokenRequest | Member Github AccessToken 갱신");
         authService.refreshGithubMember(code, response);
-        return new SingleResponseResult<>(HTTPResponse.SC_OK);
+        return ResponseResult.successResponse;
     }
 
     @GetMapping("/refresh")
     public ResponseResult refreshJWTRequest(HttpServletRequest request, HttpServletResponse response) {
         log.info("getAccessTokenRequest | Member AccessToken 갱신");
         authService.setToken(jwtService.refreshAccessToken(request.getHeader("refreshToken")), response);
-        return new SingleResponseResult<>(HTTPResponse.SC_OK);
+        return ResponseResult.successResponse;
     }
 }
