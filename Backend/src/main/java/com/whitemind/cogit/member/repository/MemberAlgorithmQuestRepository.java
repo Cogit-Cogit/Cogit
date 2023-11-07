@@ -1,6 +1,10 @@
 package com.whitemind.cogit.member.repository;
 
+import java.util.List;
+
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
+import com.whitemind.cogit.schedule.entity.AlgorithmQuest;
+
 import com.whitemind.cogit.member.entity.MemberTeam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +18,5 @@ public interface MemberAlgorithmQuestRepository extends JpaRepository<MemberAlgo
     "AND q.member.memberId = :memberId")
     MemberAlgorithmQuest findByAlgorithmQuestIdAndMemberId(@Param("algorithmQuestId") int algorithmQuestId,
                                                            @Param("memberId") int memberId);
+	List<MemberAlgorithmQuest> findByAlgorithmQuest(AlgorithmQuest algorithmQuest);
 }
