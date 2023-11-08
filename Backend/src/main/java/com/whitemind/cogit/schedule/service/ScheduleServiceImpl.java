@@ -56,7 +56,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                 .team(study).build();
         scheduleRepository.save(schedule);
 
-        AddQuestToSchedule(scheduleRequest.getAlgorithmQuestList(), schedule, scheduleRequest.getStudyId());
+        addQuestToSchedule(scheduleRequest.getAlgorithmQuestList(), schedule, scheduleRequest.getStudyId());
     }
 
     @Override
@@ -122,13 +122,13 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public void AddQuest(AddQuestRequest addQuestRequest) {
+    public void addQuest(AddQuestRequest addQuestRequest) {
         Schedule schedule = scheduleRepository.findByScheduleId(addQuestRequest.getScheduleId());
         // 문제 등록
-        AddQuestToSchedule(addQuestRequest.getAlgorithmQuestList(), schedule, addQuestRequest.getScheduleId());
+        addQuestToSchedule(addQuestRequest.getAlgorithmQuestList(), schedule, addQuestRequest.getScheduleId());
     }
 
-    public void AddQuestToSchedule(List<String> algorithmQuestList, Schedule schedule, int studyId){
+    public void addQuestToSchedule(List<String> algorithmQuestList, Schedule schedule, int studyId){
         // 해당 스케줄에 각 문제 등록
         for (String questUrl : algorithmQuestList){
             String [] questNumber = questUrl.split("/");

@@ -20,9 +20,12 @@ import com.whitemind.cogit.schedule.repository.AlgorithmQuestRepository;
 import com.whitemind.cogit.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +133,7 @@ public class CodeServiceImpl implements CodeService {
 
     @Override
     public CodeDetailResponse getCodeDetail(int codeId) {
+        log.info("getCodeDetail | 코드 상세 조회");
         Code code = codeRepository.findById(codeId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_CODE_EXCEPTION));
 
@@ -148,7 +152,35 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public List<GetCodeHistoryResponse> getCodeHisttory(int memberId, int scheduleId) {
+    public List<GetCodeHistoryResponse> getMyCodeHistory(int algorithmQuestNumber, String platform, int page, HttpServletRequest request) {
+        log.info("getMyCodeHistory | 특정 문제 내 코드 제출 기록 조회");
+
+
+        Member member = memberRepository.findMembersByMemberId((int) request.getAttribute("memberId"));
+
+        // 문제 번호, 문제 플랫폼으로 algorithmQuest 조회
+        List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findByQuestIdAndPlatform(algorithmQuestNumber, setPlatform(platform));
+
+        List<GetCodeHistoryResponse> getCodeHistoryResponseList = new ArrayList<>();
+
+        for (AlgorithmQuest algorithmQuest : algorithmQuestList) {
+            // algorithmQuest 목록 중, 내가 제출한 코드 페이지 별로 조회
+            List<Code> codeList = codeRepository.findByAlgorithmQuestIdAndMemberIdByPage(member.getMemberId(), algorithmQuest.getAlgorithmQuestId(), PageRequest.of(page, 10)).getContent();
+
+            for (Code code : codeList) {
+                getCodeHistoryResponseList.add(GetCodeHistoryResponse.builder()
+                        .codeId(code.getCodeId())
+                        .codeSolved(code.isCodeSolved())
+                        .codeLanguage(code.getLanguage())
+                        .codeRunningTime(code.getCodeRunningTime()).build());
+            }
+        }
+        return getCodeHistoryResponseList;
+    }
+
+    @Override
+    public List<GetCodeHistoryResponse> getCodeHistory(int memberId, int scheduleId) {
+        log.info("getCodeHistory | 코드 제출 기록 조회");
         Schedule schedule = scheduleRepository.findByScheduleId(scheduleId);
 
         List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findBySchedule(schedule);

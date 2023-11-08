@@ -17,5 +17,5 @@ public interface ScheduleService {
 
     List<GetAlgorithmQuestResponse> getScheduleDetail(int scheduleId, HttpServletRequest request);
 
-    void AddQuest(AddQuestRequest addQuestRequest);
+    void addQuest(AddQuestRequest addQuestRequest);
 }
