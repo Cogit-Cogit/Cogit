@@ -14,74 +14,76 @@ function parseAccessCode(url) {
 
 // 코깃코깃 서비스 로그인
 function requestCogitLogin(code) {
-  console.log("parameter", code);
+  console.log('parameter', code);
 
   fetch(`http://localhost:8080/auth/regist?code=${code}`, {
-    method: "GET",
+    method: 'GET',
   }).then((response) => {
     console.log(response);
     // 응답헤어 로큰 익스텐션 로컬스토리지 저장
-    console.log(response.headers.get("Authorization"));
+    console.log(response.headers.get('Authorization'));
     chrome.storage.local.set(
       {
         cogit: {
-          Authorization: response.headers.get("Authorization"),
-          RefreshToken: response.headers.get("RefreshToken"),
+          Authorization: response.headers.get('Authorization'),
+          RefreshToken: response.headers.get('RefreshToken'),
         },
       },
       () => {
         // 저장 되었는지 확인
-        chrome.storage.local.get("cogit", (data) => {
+        chrome.storage.local.get('cogit', (data) => {
           console.log(data);
         });
         // window.close();
       }
     );
   });
+  chrome.storage.local.remove('pipe_cogit');
 }
 
 /* Check for open pipe */
-if (window.location.host === "github.com") {
+if (
+  window.location.host === 'github.com' &&
+  window.location.href.includes('?code=')
+) {
   const link = window.location.href;
-  chrome.storage.local.get("pipe_cogit", (data) => {
+  chrome.storage.local.get('pipe_cogit', (data) => {
     if (data && data.pipe_cogit) {
       const code = parseAccessCode(link);
       if (code != null) {
         requestCogitLogin(code);
       }
-
-      chrome.storage.local.remove("pipe_cogit");
     }
   });
 }
 
 function refreshAccessToken() {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get("cogit", function (result) {
+    chrome.storage.local.get('cogit', function (result) {
       const cogitData = result.cogit;
 
       if (!cogitData || !cogitData.RefreshToken) {
-        console.log("리프레시 토큰이 없습니다.");
-        reject("리프레시 토큰이 없습니다.");
+        console.log('리프레시 토큰이 없습니다.');
+        reject('리프레시 토큰이 없습니다.');
         return;
       }
 
       const refreshToken = cogitData.RefreshToken;
 
-      fetch("http://localhost:8080/auth/refresh", {
-        method: "GET",
+      fetch('http://localhost:8080/auth/refresh', {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           RefreshToken: refreshToken,
         },
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error("리프레시 토큰 요청에 실패했습니다.");
+            throw new Error('리프레시 토큰 요청에 실패했습니다.');
           }
           console.log(response);
 
-          const newAuthorization = response.headers.get("Authorization");
+          const newAuthorization = response.headers.get('Authorization');
 
           chrome.storage.local.set(
             {
@@ -92,7 +94,7 @@ function refreshAccessToken() {
             },
             () => {
               // 저장되었는지 확인
-              chrome.storage.local.get("cogit", (data) => {
+              chrome.storage.local.get('cogit', (data) => {
                 console.log(data);
                 resolve(newAuthorization); // Promise에 새로운 토큰 반환
               });
