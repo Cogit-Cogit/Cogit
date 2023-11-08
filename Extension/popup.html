@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/popup.css" />
+    <link rel="stylesheet" href="popup.css" />
     <script src="/library/jquery-3.3.1.min.js"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <link
@@ -14,19 +14,22 @@
   <body>
     <div class="ui grid container">
       <div class="sixteen wide center aligned column">
-        <h1 id="title"><span style="color: #0078c3">코깃코깃입니당</span></h1>
-        <p id="caption">I love Cogit~</p>
-        <img
-          id="imageLogo"
-          src="./images/wellC_Cogit.png"
-          style="width: 100px"
-        />
+        <h1 id="title">
+          <span style="color: #619fff">COGIT</span><span style="color: #c3d9fb">COGIT</span>
+        </h1>
+        <p class="onboarding">
+          Sync your code from algorithm platform to
+          <span style="color: #000000">GitHub</span>
+        </p>
+        <div id = "active">
+        <img id="imageLogo" src="./images/pets.png" style="width: 50px" /><br />
+        <p style="color: #f79f5f">activation</p>
+        </div>
         <!-- Authentication mode -->
         <div id="auth_mode" style="display: block">
-          <p class="onboarding">
-            <br />
-            Authenticate with GitHub to use
-            <strong><span style="color: #f18500">CogitCogit</span></strong>
+          <p id="content">
+            Authenticate with GitHub to use<br />
+            COGITCOGIT
           </p>
           <button id="authenticate" class="ui secondary button">
             <i class="icon github"></i>

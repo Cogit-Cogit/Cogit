@@ -24,10 +24,10 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "/images/cogit.PNG",
-      "32": "/images/cogit.PNG",
-      "48": "/images/cogit.PNG",
-      "128": "/images/cogit.PNG"
+      "16": "/images/pets.png",
+      "32": "/images/pets.png",
+      "48": "/images/pets.png",
+      "128": "/images/pets.png"
     }
   },
   "icons": {
