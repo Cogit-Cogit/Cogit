@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 
 function SectionMain({ className, children }) {
-  return <div className={classnames(`bg-white rounded-small`, className)}>{children}</div>;
+  return <div className={classnames(`bg-white rounded-small p-3 m-4`, className)}>{children}</div>;
 }
 
 function SectionTitle({ className, children }) {
@@ -14,7 +14,7 @@ function SectionButtonContainer({ className, children }) {
 }
 
 function SectionContainer({ children }) {
-  return <>{children}</>;
+  return <div className="flex flex-col items-center">{children}</div>;
 }
 export const Section = Object.assign(SectionMain, {
   Title: SectionTitle,

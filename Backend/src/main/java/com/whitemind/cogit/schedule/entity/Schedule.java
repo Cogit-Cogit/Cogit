@@ -16,11 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @SuperBuilder(toBuilder = true)
-@Table(name = "schedule")
-public class Schedule extends BaseEntity {
+@Table(name = "schedule", indexes = @Index(name="idx_team", columnList = "team_id"))
+public class Schedule {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int scheduleId;
 
+    @Column(nullable = false, length = 50)
     private String scheduleName;
 
     private Date scheduleStartAt;
@@ -28,10 +30,7 @@ public class Schedule extends BaseEntity {
     private Date scheduleEndAt;
 
     @OneToMany(mappedBy = "schedule")
-    private List<ScheduleProblem> scheduleProblemList;
-
-    @OneToMany(mappedBy = "schedule")
-    private List<Subject> subjectList;
+    private List<ScheduleAlgorithmQuest> scheduleAlgorithmQuestList;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
