@@ -10,9 +10,7 @@ if (submitButton != null) {
 function saveCode() {
   const codeMirrorLines = document.querySelectorAll('.CodeMirror-line');
 
-  const linesContent = Array.from(codeMirrorLines).map(
-    (line) => line.textContent
-  );
+  const linesContent = Array.from(codeMirrorLines).map((line) => line.textContent);
 
   const contentWithNewlines = linesContent.join('\n');
 
@@ -27,14 +25,27 @@ if (solutionElements.length > 0) {
   let spanElement = firstSolutionElement.querySelector('span[data-color]');
   preContent = spanElement.textContent;
   console.log(preContent);
-  if (
-    preContent.includes('채점 중') ||
-    preContent.includes('기다리는 중') ||
-    preContent.includes('채점 준비 중') ||
-    preContent.includes('중')
-  ) {
+
+  let isActive = false;
+  chrome.storage.local.get('active', function (result) {
+    console.log(result.active);
+    if (result.active) {
+      if (result.active == 'active') {
+        isActive = true;
+      }
+    }
+  });
+
+  if (preContent.includes('중')) {
     // 2초 간격으로 내용 확인
     const intervalId = setInterval(function () {
+      chrome.storage.local.get('active', function (result) {
+        if (result.active) {
+          if (result.active == 'deactive') {
+            clearInterval(intervalId); // setInterval 중지
+          }
+        }
+      });
       solutionElements = document.querySelectorAll('[id^="solution-"]');
       firstSolutionElement = solutionElements[0];
       spanElement = firstSolutionElement.querySelector('span[data-color]');
@@ -50,8 +61,7 @@ if (solutionElements.length > 0) {
             .textContent.trim();
           let codeFileExtension = baekjoonExtension[codeLanguage];
           codeLanguage = baekjoonLanguages[codeLanguage];
-          let codeRunningTime =
-            firstSolutionElement.querySelector('.time').textContent;
+          let codeRunningTime = firstSolutionElement.querySelector('.time').textContent;
           let algorithmQuestId = firstSolutionElement
             .querySelector('td:nth-child(3)')
             .querySelector('a').textContent;
@@ -71,8 +81,7 @@ if (solutionElements.length > 0) {
                 `${PLATFORM_URL}${algorithmQuestId}`
               );
               var cogitImg = document.createElement('img');
-              cogitImg.src =
-                'https://cogitusercode.s3.ap-northeast-2.amazonaws.com/cogit.PNG';
+              cogitImg.src = 'https://cogitusercode.s3.ap-northeast-2.amazonaws.com/cogit.PNG';
               cogitImg.style = 'width:20px';
               spanElement.appendChild(cogitImg);
             } else if (
@@ -97,6 +106,6 @@ if (solutionElements.length > 0) {
       }
     }, 2000);
   } else {
-    console.log('이미 제출한 코드입니다.');
+    console.log('코드를 전송하지 않았습니다.');
   }
 }

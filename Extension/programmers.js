@@ -4,7 +4,15 @@ const PLATFORM_URL =
 const submitButton = document.getElementById('submit-code');
 if (submitButton != null) {
   submitButton.addEventListener('click', function () {
-    saveCode();
+    
+      chrome.storage.local.get('active', function (result) {
+        if (result.active) {
+          if (result.active == 'active') {
+            saveCode();
+          }
+        }
+      });
+    
   });
 }
 
