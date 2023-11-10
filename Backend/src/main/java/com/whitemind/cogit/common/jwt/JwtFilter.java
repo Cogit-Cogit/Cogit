@@ -40,11 +40,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // Token 꺼내기
         String token = authorization.split(" ")[1];
+        log.info("JwtFilter doFilterInternal | accessToken : " + token);
 
         try {
             Jws<Claims> claims = JwtUtils.parseToken(token, secretKey);
             int memberId = claims.getBody().get("memberId", Integer.class);
             request.setAttribute("memberId", memberId);
+            log.info("JwtFilter doFilterInternal | memberId : " + String.valueOf(memberId));
 
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken("memberId", null, List.of(new SimpleGrantedAuthority("USER")));
@@ -52,6 +54,8 @@ public class JwtFilter extends OncePerRequestFilter {
             // 상세정보 추가
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            log.info("JwtFilter doFilterInternal | SecurityContextHolder set complete");
 
             filterChain.doFilter(request, response);
         } catch (SecurityException e) {
