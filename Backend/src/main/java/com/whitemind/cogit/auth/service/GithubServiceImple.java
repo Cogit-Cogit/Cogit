@@ -7,8 +7,13 @@ import com.whitemind.cogit.common.jwt.JwtService;
 import com.whitemind.cogit.member.dto.UpdateMemberDto;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.repository.MemberRepository;
+import com.whitemind.cogit.member.service.StudyService;
+import com.whitemind.cogit.schedule.dto.request.CreateScheduleRequest;
+import com.whitemind.cogit.schedule.entity.Schedule;
+import com.whitemind.cogit.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Update;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
 
 @Slf4j
@@ -53,7 +60,22 @@ public class GithubServiceImple implements GithubService {
         String responseData = getResponse(conn, responseCode, 200);
         JSONObject jObject = new JSONObject(responseData);
 
-        UpdateMemberDto updateMemberDto = new UpdateMemberDto(jObject.getInt("id"), jObject.getString("html_url"), jObject.getString("login"), jObject.getString("login"),"", jObject.getString("avatar_url"), accessToken);
+        Member member = memberRepository.findMembersByMemberId(jObject.getInt("id"));
+
+        UpdateMemberDto updateMemberDto = null;
+
+        if (member != null)
+            updateMemberDto = UpdateMemberDto.builder()
+                    .memberId(member.getMemberId())
+                    .memberGitUrl(member.getMemberGitUrl())
+                    .memberName(member.getMemberName())
+                    .memberNickname(member.getMemberNickname())
+                    .memberProfileImage(member.getMemberProfileImage())
+                    .memberRefreshToken(member.getMemberRefreshToken())
+                    .memberGitAccessToken(accessToken)
+                    .build();
+        else
+            updateMemberDto = new UpdateMemberDto(jObject.getInt("id"), jObject.getString("html_url"), jObject.getString("login"), jObject.getString("login"), "", jObject.getString("avatar_url"), accessToken);
 
         conn.disconnect();
         return updateMemberDto;

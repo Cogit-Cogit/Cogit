@@ -1,8 +1,8 @@
 package com.whitemind.cogit.code.service.implement;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.whitemind.cogit.code.dto.request.CodeRequest;
 import com.whitemind.cogit.code.dto.response.CodeDetailResponse;
+import com.whitemind.cogit.code.dto.response.GetCodeHistoryResponse;
 import com.whitemind.cogit.code.entity.Code;
 import com.whitemind.cogit.code.repository.CodeRepository;
 import com.whitemind.cogit.code.service.CodeService;
@@ -11,10 +11,8 @@ import com.whitemind.cogit.common.error.ExceptionCode;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
 import com.whitemind.cogit.member.entity.MemberTeam;
-import com.whitemind.cogit.member.entity.Team;
 import com.whitemind.cogit.member.repository.MemberAlgorithmQuestRepository;
 import com.whitemind.cogit.member.repository.MemberRepository;
-import com.whitemind.cogit.member.repository.TeamRepository;
 import com.whitemind.cogit.schedule.entity.AlgorithmQuest;
 import com.whitemind.cogit.schedule.entity.AlgorithmQuestPlatform;
 import com.whitemind.cogit.schedule.entity.Schedule;
@@ -22,27 +20,26 @@ import com.whitemind.cogit.schedule.repository.AlgorithmQuestRepository;
 import com.whitemind.cogit.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class CodeServiceImpl implements CodeService {
-    private final EntityManager em;
     private final CodeRepository codeRepository;
     private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
-    private final TeamRepository teamRepository;
     private final AlgorithmQuestRepository algorithmQuestRepository;
     private final MemberAlgorithmQuestRepository memberAlgorithmQuestRepository;
-    private final JPAQueryFactory queryFactory;
 
 
     @Override
@@ -136,6 +133,7 @@ public class CodeServiceImpl implements CodeService {
 
     @Override
     public CodeDetailResponse getCodeDetail(int codeId) {
+        log.info("getCodeDetail | 코드 상세 조회");
         Code code = codeRepository.findById(codeId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_CODE_EXCEPTION));
 
@@ -151,6 +149,63 @@ public class CodeServiceImpl implements CodeService {
                 .codeRunningTime(code.getCodeRunningTime())
                 .codeSolved(false) // TODO
                 .build();
+    }
+
+    @Override
+    public List<GetCodeHistoryResponse> getMyCodeHistory(int algorithmQuestNumber, String platform, int page, HttpServletRequest request) {
+        log.info("getMyCodeHistory | 특정 문제 내 코드 제출 기록 조회");
+
+
+        Member member = memberRepository.findMembersByMemberId((int) request.getAttribute("memberId"));
+
+        // 문제 번호, 문제 플랫폼으로 algorithmQuest 조회
+        List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findByQuestIdAndPlatform(algorithmQuestNumber, setPlatform(platform));
+
+        List<GetCodeHistoryResponse> getCodeHistoryResponseList = new ArrayList<>();
+
+        for (AlgorithmQuest algorithmQuest : algorithmQuestList) {
+            // algorithmQuest 목록 중, 내가 제출한 코드 페이지 별로 조회
+            List<Code> codeList = codeRepository.findByAlgorithmQuestIdAndMemberIdByPage(member.getMemberId(), algorithmQuest.getAlgorithmQuestId(), PageRequest.of(page, 10)).getContent();
+
+            for (Code code : codeList) {
+                getCodeHistoryResponseList.add(GetCodeHistoryResponse.builder()
+                        .codeId(code.getCodeId())
+                        .codeSolved(code.isCodeSolved())
+                        .codeLanguage(code.getLanguage())
+                        .codeRunningTime(code.getCodeRunningTime()).build());
+            }
+        }
+        return getCodeHistoryResponseList;
+    }
+
+    @Override
+    public List<GetCodeHistoryResponse> getCodeHistory(int memberId, int scheduleId) {
+        log.info("getCodeHistory | 코드 제출 기록 조회");
+        Schedule schedule = scheduleRepository.findByScheduleId(scheduleId);
+
+        List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findBySchedule(schedule);
+
+        List<GetCodeHistoryResponse> getCodeHistoryResponseList = new ArrayList<>();
+
+        // AlgorithmQuest 조회
+        for (AlgorithmQuest quest: algorithmQuestList) {
+            // memberAlgorithmQuest 조회
+            for (MemberAlgorithmQuest memberAlgorithmQuest: quest.getMemberAlgorithmQuestList()) {
+                // member Code 조회
+                for (Code code : memberAlgorithmQuest.getMember().getCodeList()) {
+                    getCodeHistoryResponseList
+                        .add(GetCodeHistoryResponse
+                        .builder()
+                        .codeId(code.getCodeId())
+                        .codeLanguage(code.getLanguage())
+                        .codeRunningTime(code.getCodeRunningTime())
+                        .codeSolved(code.isCodeSolved())
+                        .build());
+                }
+            }
+        }
+
+        return getCodeHistoryResponseList;
     }
 
     public void saveCodeToDatabase() {

@@ -1,0 +1,1 @@
+package com.whitemind.cogit.schedule.dto.response;import java.util.List;import com.whitemind.cogit.schedule.dto.GetScheduleDto;import lombok.Builder;import lombok.Getter;@Builder@Getterpublic class GetStudyDetailResponse {	private int teamId;	private String teamName;	private List<GetScheduleDto> scheduleList;}
