@@ -52,8 +52,8 @@ public class Member {
 
 
     //닉네임 수정
-    public void updateNickname(String memberName) {
-        this.memberName = memberName;
+    public void updateNickname(String memberNickname) {
+        this.memberNickname = memberNickname;
     }
     //프로필 이미지 수정
     public void updateProfileImage(String memberProfileImage){

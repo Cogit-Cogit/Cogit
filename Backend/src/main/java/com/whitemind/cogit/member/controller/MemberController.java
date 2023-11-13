@@ -3,6 +3,7 @@ package com.whitemind.cogit.member.controller;
 import com.whitemind.cogit.common.response.ListResponseResult;
 import com.whitemind.cogit.common.response.ResponseResult;
 import com.whitemind.cogit.member.dto.request.UpdateMemberNicknameRequest;
+import com.whitemind.cogit.member.dto.response.GetMemberResponse;
 import com.whitemind.cogit.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +33,8 @@ public class MemberController {
     }
 
     @GetMapping("/list")
-    public ListResponseResult getMemberListRequest() {
+    public ListResponseResult<GetMemberResponse> getMemberListRequest() {
         log.info("getMemberListRequest | Member 전체 리스트 조회");
-        return new ListResponseResult(memberService.getMemberList());
+        return new ListResponseResult<>(memberService.getMemberList());
     }
 }

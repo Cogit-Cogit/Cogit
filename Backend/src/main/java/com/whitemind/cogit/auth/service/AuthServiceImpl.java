@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthService{
         if (isNewMember) {
             log.info("UserServiceImple_refreshGithubMember | 신규 유저입니다. 기본 스터디 그룹과 일정을 생성합니다.");
             studyService.createStudy(updateMemberDto.getMemberName(), updateMemberDto.getMemberId());
-            scheduleService.createSchedule(new CreateScheduleRequest(1, new ArrayList<>(), "기본 일정", LocalDate.now(), LocalDate.of(9999, 12, 31)));
+            scheduleService.createSchedule(new CreateScheduleRequest(studyService.getTeamId(updateMemberDto.getMemberName()), new ArrayList<>(), "기본 일정", LocalDate.now(), LocalDate.of(9999, 12, 31)));
         }
         setToken(jwt, response);
     }

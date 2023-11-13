@@ -11,8 +11,10 @@ import com.whitemind.cogit.common.error.ExceptionCode;
 import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
 import com.whitemind.cogit.member.entity.MemberTeam;
+import com.whitemind.cogit.member.entity.Team;
 import com.whitemind.cogit.member.repository.MemberAlgorithmQuestRepository;
 import com.whitemind.cogit.member.repository.MemberRepository;
+import com.whitemind.cogit.member.repository.TeamRepository;
 import com.whitemind.cogit.schedule.entity.AlgorithmQuest;
 import com.whitemind.cogit.schedule.entity.AlgorithmQuestPlatform;
 import com.whitemind.cogit.schedule.entity.Schedule;
@@ -37,6 +39,7 @@ import java.util.stream.Collectors;
 public class CodeServiceImpl implements CodeService {
     private final CodeRepository codeRepository;
     private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
     private final ScheduleRepository scheduleRepository;
     private final AlgorithmQuestRepository algorithmQuestRepository;
     private final MemberAlgorithmQuestRepository memberAlgorithmQuestRepository;
@@ -86,8 +89,9 @@ public class CodeServiceImpl implements CodeService {
         if(currentSchedule.size() == 0) {
             log.info("saveCode | 일정에 등록되지 않은 문제 => 개인 저장소 업로드");
 
-            Schedule schedule = scheduleRepository.findByScheduleId(1);
-
+//            Schedule schedule = scheduleRepository.findByScheduleId(1);
+            Team team = teamRepository.findByTeamName(memberRepository.findMembersByMemberId(memberId).getMemberName());
+            Schedule schedule = scheduleRepository.findByScheduleNameAndScheduleId("기본일정", team.getTeamId());
             // 이미 문제 DB에 등록되어있는지 확인
             algorithmQuest = algorithmQuestRepository.findByAlgorithmQuestNumber(codeRequest.getAlgorithmQuestNumber());
 

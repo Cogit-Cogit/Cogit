@@ -1,13 +1,10 @@
 package com.whitemind.cogit.auth.controller;
 
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import com.whitemind.cogit.auth.service.AuthService;
 import com.whitemind.cogit.common.response.ResponseResult;
-import com.whitemind.cogit.common.response.SingleResponseResult;
 import com.whitemind.cogit.common.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.HTTP;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-public class AuthContoller {
+public class AuthController {
 
     private final AuthService authService;
     private final JwtService jwtService;

@@ -1,11 +1,8 @@
 package com.whitemind.cogit.schedule.controller;
 
-import java.util.List;
-
 import com.whitemind.cogit.common.response.ListResponseResult;
 import com.whitemind.cogit.common.response.ResponseResult;
 import com.whitemind.cogit.common.response.SingleResponseResult;
-import com.whitemind.cogit.member.dto.request.CreateStudyRequest;
 import com.whitemind.cogit.schedule.dto.request.AddQuestRequest;
 import com.whitemind.cogit.schedule.dto.request.CreateScheduleRequest;
 import com.whitemind.cogit.schedule.dto.response.GetAlgorithmQuestResponse;
@@ -29,24 +26,27 @@ import javax.servlet.http.HttpServletRequest;
 public class ScheduleController {
     private final ScheduleService scheduleService;
     @PostMapping("/add")
-    public ResponseResult createStudySchetule(@RequestBody CreateScheduleRequest schedule) throws Exception {
-        log.info("createStudySchetule | Study 스케줄 생성 요청");
+    public ResponseResult createStudySchedule(@RequestBody CreateScheduleRequest schedule) throws Exception {
+        log.info("createStudySchedule | Study 스케줄 생성 요청");
         scheduleService.createSchedule(schedule);
         return ResponseResult.successResponse;
     }
 
     @GetMapping("/team")
-    public SingleResponseResult getStudyDetail(int teamId, HttpServletRequest request) throws Exception {
-        return new SingleResponseResult<GetStudyDetailResponse>(scheduleService.getStudyDetail(teamId, request));
+    public SingleResponseResult<GetStudyDetailResponse> getStudyDetail(int teamId, HttpServletRequest request) throws Exception {
+        log.info("getStudyDetail | 스터디 상세 정보 조회");
+        return new SingleResponseResult<>(scheduleService.getStudyDetail(teamId, request));
     }
 
     @GetMapping()
-    public ListResponseResult getScheduleDetail(int scheduleId, HttpServletRequest request) throws Exception {
-        return new ListResponseResult<GetAlgorithmQuestResponse>(scheduleService.getScheduleDetail(scheduleId, request));
+    public ListResponseResult<GetAlgorithmQuestResponse> getScheduleDetail(int scheduleId, HttpServletRequest request) throws Exception {
+        log.info("getScheduleDetail | 스터디 일정 상세 정보 조회");
+        return new ListResponseResult<>(scheduleService.getScheduleDetail(scheduleId, request));
     }
 
     @PostMapping("/quest/add")
-    public ResponseResult addQuesttoSchedule(@RequestBody AddQuestRequest addQuestRequest) {
+    public ResponseResult addQuestToSchedule(@RequestBody AddQuestRequest addQuestRequest) {
+        log.info("addQuestToSchedule | 일정에 알고리즘 문제 추가");
         scheduleService.addQuest(addQuestRequest);
         return SingleResponseResult.successResponse;
     }
