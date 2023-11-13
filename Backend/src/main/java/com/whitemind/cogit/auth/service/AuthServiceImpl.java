@@ -3,6 +3,8 @@ package com.whitemind.cogit.auth.service;
 import com.whitemind.cogit.common.entity.JWT;
 import com.whitemind.cogit.common.jwt.JwtService;
 import com.whitemind.cogit.member.dto.UpdateMemberDto;
+import com.whitemind.cogit.member.dto.response.GetMemberResponse;
+import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.repository.MemberRepository;
 import com.whitemind.cogit.member.service.StudyService;
 import com.whitemind.cogit.schedule.dto.request.CreateScheduleRequest;
@@ -34,7 +36,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public void refreshGithubMember(String code, HttpServletResponse response) throws IOException {
+    public GetMemberResponse refreshGithubMember(String code, HttpServletResponse response) throws IOException {
         log.info("UserServiceImple_refreshGithubMember | 사용자 정보 추가 or 갱신");
         String accessToken = githubService.getAccessToken(code);
         UpdateMemberDto updateMemberDto = githubService.getGithubUserInfo(accessToken);
@@ -52,6 +54,17 @@ public class AuthServiceImpl implements AuthService{
             studyService.createStudy(updateMemberDto.getMemberName(), updateMemberDto.getMemberId());
             scheduleService.createSchedule(new CreateScheduleRequest(studyService.getTeamId(updateMemberDto.getMemberName()), new ArrayList<>(), "기본 일정", LocalDate.now(), LocalDate.of(9999, 12, 31)));
         }
+
         setToken(jwt, response);
+
+        Member member = memberRepository.findMembersByMemberId(updateMemberDto.getMemberId());
+
+        return GetMemberResponse.builder()
+                .memberId(member.getMemberId())
+                .memberGitUrl(member.getMemberGitUrl())
+                .memberName(member.getMemberName())
+                .memberNickname(member.getMemberNickname())
+                .memberProfileImage(member.getMemberProfileImage())
+                .build();
     }
 }

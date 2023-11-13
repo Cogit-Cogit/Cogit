@@ -3,6 +3,8 @@ package com.whitemind.cogit.auth.controller;
 import com.whitemind.cogit.auth.service.AuthService;
 import com.whitemind.cogit.common.response.ResponseResult;
 import com.whitemind.cogit.common.jwt.JwtService;
+import com.whitemind.cogit.common.response.SingleResponseResult;
+import com.whitemind.cogit.member.dto.response.GetMemberResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +25,9 @@ public class AuthController {
     private final JwtService jwtService;
 
     @GetMapping("/regist")
-    public ResponseResult refreshMemberRequest(@RequestParam String code, HttpServletResponse response) throws Exception {
+    public SingleResponseResult refreshMemberRequest(@RequestParam String code, HttpServletResponse response) throws Exception {
         log.info("getAccessTokenRequest | Member Github AccessToken 갱신");
-        authService.refreshGithubMember(code, response);
-        return ResponseResult.successResponse;
+        return new SingleResponseResult<GetMemberResponse>(authService.refreshGithubMember(code, response));
     }
 
     @GetMapping("/refresh")
