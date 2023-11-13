@@ -109,6 +109,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
             GetAlgorithmQuestResponse getAlgorithmQuest = GetAlgorithmQuestResponse.builder()
                 .algorithmQuestId(algorithmQuest.getAlgorithmQuestId())
+                .algorithmQuestNumber(algorithmQuest.getAlgorithmQuestNumber())
                 .algorithmQuestPlatform(algorithmQuest.getAlgorithmQuestPlatform().getValue())
                 .algorithmQuestUrl(algorithmQuest.getAlgorithmQuestUrl())
                 .memberAlgorithmQuestList(getMemberAlgorithmQuests)
