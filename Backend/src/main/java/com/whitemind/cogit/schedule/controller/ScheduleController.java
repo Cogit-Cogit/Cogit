@@ -11,11 +11,7 @@ import com.whitemind.cogit.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,13 +29,13 @@ public class ScheduleController {
     }
 
     @GetMapping("/team")
-    public SingleResponseResult<GetStudyDetailResponse> getStudyDetail(int teamId, HttpServletRequest request) throws Exception {
+    public SingleResponseResult<GetStudyDetailResponse> getStudyDetail(@RequestParam int teamId, HttpServletRequest request) throws Exception {
         log.info("getStudyDetail | 스터디 상세 정보 조회");
         return new SingleResponseResult<>(scheduleService.getStudyDetail(teamId, request));
     }
 
     @GetMapping()
-    public ListResponseResult<GetAlgorithmQuestResponse> getScheduleDetail(int scheduleId, HttpServletRequest request) throws Exception {
+    public ListResponseResult<GetAlgorithmQuestResponse> getScheduleDetail(@RequestParam int scheduleId, HttpServletRequest request) throws Exception {
         log.info("getScheduleDetail | 스터디 일정 상세 정보 조회");
         return new ListResponseResult<>(scheduleService.getScheduleDetail(scheduleId, request));
     }
