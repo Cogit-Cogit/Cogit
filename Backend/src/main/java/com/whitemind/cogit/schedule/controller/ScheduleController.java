@@ -21,6 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/schedule")
 public class ScheduleController {
     private final ScheduleService scheduleService;
+
+    @GetMapping("myStudy")
+    public ListResponseResult<GetStudyDetailResponse> getAllStudyDetail(HttpServletRequest request) throws Exception {
+        log.info("getMyAllStudyDetail | 속한 스터디의 모든 일정 조회");
+        return new ListResponseResult<>(scheduleService.getAllStudyDetail(request));
+    }
     @PostMapping("/add")
     public ResponseResult createStudySchedule(@RequestBody CreateScheduleRequest schedule) throws Exception {
         log.info("createStudySchedule | Study 스케줄 생성 요청");

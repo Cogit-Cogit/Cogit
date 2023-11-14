@@ -2,6 +2,7 @@ package com.whitemind.cogit.schedule.service;
 
 import com.whitemind.cogit.common.error.CustomException;
 import com.whitemind.cogit.common.error.ExceptionCode;
+import com.whitemind.cogit.member.entity.Member;
 import com.whitemind.cogit.member.entity.MemberAlgorithmQuest;
 import com.whitemind.cogit.member.entity.MemberTeam;
 import com.whitemind.cogit.member.entity.Team;
@@ -29,6 +30,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,6 +42,20 @@ public class ScheduleServiceImpl implements ScheduleService{
     private final AlgorithmQuestRepository algorithmQuestRepository;
     private final MemberAlgorithmQuestRepository memberAlgorithmQuestRepository;
     private final MemberTeamRepository memberTeamRepository;
+
+    @Override
+    public List<GetStudyDetailResponse> getAllStudyDetail(HttpServletRequest request) {
+        Member member = memberRepository.findById((Integer) request.getAttribute("memberId"))
+            .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_MEMBER_EXCEPTION));
+
+        List<MemberTeam> memberTeams = memberTeamRepository.findByMember(member);
+
+        List<GetStudyDetailResponse> getStudyDetailResponseList = memberTeams.stream()
+            .map(memberteam -> getStudyDetail(memberteam.getTeam().getTeamId(), request))
+            .collect(Collectors.toList());
+
+        return getStudyDetailResponseList;
+    }
 
     @Override
     @Transactional
