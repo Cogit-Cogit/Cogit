@@ -1,5 +1,9 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import classnames from 'classnames';
+import DatePicker from 'react-datepicker';
+import { ko } from 'date-fns/esm/locale';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 function InputMain({ children, className }) {
   return (
@@ -48,10 +52,27 @@ function InputUnit({ children, className }) {
     </div>
   );
 }
+function InputDate({ startDate, endDate, isStart, mindate, onChange }) {
+  return (
+    <div className="flex justify-between">
+      <DatePicker
+        className="pb-1 mr-1 text-xl font-semibold bg-transparent text-hover "
+        selected={isStart ? startDate : endDate}
+        onChange={onChange}
+        startDate={startDate}
+        endDate={endDate}
+        minDate={mindate}
+        locale={ko}
+        dateFormat="yyyy년 MM월 dd일"
+      />
+    </div>
+  );
+}
 
 export const Input = Object.assign(InputMain, {
   Title: InputTitle,
   Wrapper: InputWrapper,
   Section: InputSection,
   Unit: InputUnit,
+  Date: InputDate,
 });

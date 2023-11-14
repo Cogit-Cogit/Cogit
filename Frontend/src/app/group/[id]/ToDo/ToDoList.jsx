@@ -13,8 +13,8 @@ const ToDoList = () => {
         <p className="ml-2">ToDo</p>
       </Section.Title>
       <Section.Container>
-        {memos.map((memo) => {
-          return <ToDo memo={memo} />;
+        {memos.map((memo, idx) => {
+          return <ToDo memo={memo} key={idx} />;
         })}
       </Section.Container>
     </Section>
