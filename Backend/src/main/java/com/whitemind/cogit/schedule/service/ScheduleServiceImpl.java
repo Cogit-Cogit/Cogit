@@ -86,6 +86,7 @@ public class ScheduleServiceImpl implements ScheduleService{
         List<GetScheduleDto> getSchedules = new ArrayList<>();
 
         for (Schedule schedule: schedules) {
+            if(schedule.getScheduleName().equals("기본 일정")) continue;
             GetScheduleDto getSchedule = GetScheduleDto.builder()
                 .scheduleId(schedule.getScheduleId())
                 .scheduleName(schedule.getScheduleName())
