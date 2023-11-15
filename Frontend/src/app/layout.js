@@ -1,7 +1,8 @@
 import './globals.css';
 import localFont from 'next/font/local';
 import Header from './Header';
-import Sidebar from './Sidebar';
+import { ProviderWrapper } from '@/redux/ProviderWrapper';
+import { MemberProvider } from './MemberContext';
 
 const tMoney = localFont({
   src: [
@@ -27,11 +28,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ko" className={tMoney.className}>
       <body>
-        <Header />
-        <div className="flex">
-          <Sidebar />
-          <div className="w-full bg-[#F4F6FA]">{children}</div>
-        </div>
+        <ProviderWrapper>
+          <MemberProvider>
+            <Header />
+            <div>{children}</div>
+          </MemberProvider>
+        </ProviderWrapper>
       </body>
     </html>
   );

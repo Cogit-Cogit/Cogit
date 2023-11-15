@@ -7,7 +7,7 @@ const MemberDispatchContext = createContext(null);
 
 const initialState = {
   teamList: [],
-  schedulList: [],
+  scheduleList: [],
 };
 
 function reducer(state, action) {

@@ -2,7 +2,9 @@
 
 import RadioButton from '@/components/RadioButton';
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import Sidebar from './Sidebar';
+import { useMemberState } from '@/app/MemberContext';
 
 function MyPage({ params }) {
   const DynamicCalendar = dynamic(() => import('./Calendar'), {
@@ -12,21 +14,25 @@ function MyPage({ params }) {
 
   const nickname = params.id;
 
-  const GroupList = ['하얀마음 109', '그룹 2', '그룹 3'];
+  const { teamList } = useMemberState();
+  const { scheduleList } = useMemberState();
 
   return (
-      <div className="p-3 m-4 bg-white shadow-lg rounded-large">
-        <div className="flex items-center">
-          <div className="flex justify-center mb-1 text-2xl font-bold text-hover">
-            {nickname}'s Calendar
-          </div>
-          <div className="flex justify-around pb-1">
-            {GroupList.map((group, idx) => (
-              <RadioButton key={idx} text={group} className="mx-4" />
-            ))}
+    <div className='flex'>
+    <Sidebar />
+    <div className="w-5/6 p-3 m-4 bg-white shadow-lg rounded-large">
+      <div className="flex items-center">
+        <div className="flex justify-center mb-1 text-2xl font-bold text-hover">
+          {nickname}'s Calendar
+        </div>
+        <div className="flex justify-around pb-1">
+          {teamList.map((team) => (
+            <RadioButton key={team.id} text={team.teamName} className="mx-4" />
+          ))}
         </div>
       </div>
-      <DynamicCalendar />
+      <DynamicCalendar scheduleList={scheduleList}/>
+    </div>
     </div>
   );
 }

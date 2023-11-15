@@ -1,13 +1,14 @@
 'use client';
 
 import Button from '@/components/Button';
-import React from 'react';
+import React, { useState, useEffect, use } from 'react';
 import PlusIcon from '@/icons/plus.svg';
+import { useMemberState } from '@/app/MemberContext';
 
 function Sidebar() {
   const nickname = 'Cogit';
 
-  const GroupList = ['하얀마음 109', '그룹 2', '그룹 3'];
+  const { teamList } = useMemberState();
 
   return (
     <div className="flex flex-col w-1/6 h-[93vh] px-3 pl-3 border-r-2 border-gray-400 bg-background">
@@ -20,9 +21,9 @@ function Sidebar() {
             <PlusIcon width={24} height={24} />
           </Button>
         </div>
-        {GroupList.map((group, idx) => (
-          <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover" key={idx}>
-            {group}
+        {teamList.map((team) => (
+          <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover" key={team.id}>
+            {team.teamName}
           </Button>
         ))}
         <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover">내 코드보기</Button>
