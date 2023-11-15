@@ -8,7 +8,7 @@ import Button from '@/components/Button';
 
 function CodeDetail() {
   return (
-    <div className="flex">
+    <div className="flex justify-center">
       <Section className="h-[86vh] w-[50vw] p-5">
           <Section.Title className="justify-between">
             <div className='flex'>
@@ -22,7 +22,7 @@ function CodeDetail() {
           <Section.Container>
           </Section.Container>
         </Section>
-        <Section className="h-[86vh] w-[35vw] p-5">
+        <Section className="h-[86vh] w-[30vw] p-5">
           <Section.Title>
             <CommentIcon alt="CodeIcon" width={36} height={36} />
             <p className="ml-2">댓글</p>
