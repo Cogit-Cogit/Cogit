@@ -1,5 +1,6 @@
 package com.whitemind.cogit.schedule.dto.request;
 
+import com.whitemind.cogit.schedule.dto.AlgorithmQuestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 public class CreateScheduleRequest {
     private int studyId;
-    private List<String> algorithmQuestList;
+    private List<AlgorithmQuestDto> algorithmQuestList;
     private String scheduleName;
     private LocalDate scheduleStart;
     private LocalDate scheduleEnd;
