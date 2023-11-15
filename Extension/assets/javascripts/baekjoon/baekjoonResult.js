@@ -1,31 +1,14 @@
 const PLATFORM_URL = 'https://www.acmicpc.net/problem/';
 
-const submitButton = document.getElementById('submit_button');
-if (submitButton != null) {
-  submitButton.addEventListener('click', function () {
-    saveCode();
-  });
-}
-
-function saveCode() {
-  const codeMirrorLines = document.querySelectorAll('.CodeMirror-line');
-
-  const linesContent = Array.from(codeMirrorLines).map((line) => line.textContent);
-
-  const contentWithNewlines = linesContent.join('\n');
-
-  localStorage.setItem('code', contentWithNewlines);
-}
-
 let solutionElements = document.querySelectorAll('[id^="solution-"]');
 
-let preContent = '';
+
 if (solutionElements.length > 0) {
   let firstSolutionElement = solutionElements[0];
   let spanElement = firstSolutionElement.querySelector('span[data-color]');
-  preContent = spanElement.textContent;
 
-  
+  let preContent = spanElement.textContent;
+
   console.log(preContent);
   
   let isActive = false;
