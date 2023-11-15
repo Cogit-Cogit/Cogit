@@ -11,14 +11,14 @@ function GitHubLoginButton() {
   return (
     <a
       href={githubURL}
-      className="font-bold text-white bg-black h-[30px] w-[220px] inline-block p-[1px_12px_0_0] rounded-[5px] flex items-center"
+      className="font-bold text-white bg-black h-[40px] w-[280px] inline-block p-[1px_12px_0_0] rounded-[5px] flex items-center"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         aria-label="GitHub"
         role="img"
         viewBox="0 0 512 512"
-        className="w-[30px] mr-[0.5px] border-r-[0.5px] border-r-[#aaa]"
+        className="w-[40px] mr-[0.5px] border-r-[0.5px] border-r-[#aaa]"
       >
         <rect width="512" height="512" rx="15%" fill="#1B1817" />
         <path
@@ -27,7 +27,7 @@ function GitHubLoginButton() {
         />
       </svg>
 
-      <span className="pl-[5px]">Sign up with GitHub</span>
+      <span className="pl-[30px]">Sign up with GitHub</span>
     </a>
   );
 }
