@@ -1,27 +1,21 @@
 'use client';
-import React, { use, useEffect, useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import MyPage from './mypage/[id]/page';
-import { useMemberDispatch, useMemberState } from '@/app/MemberContext';
+import { useMemberDispatch } from '@/app/MemberContext';
 import axios from '@/api/index';
-import { useRouter } from 'next/navigation';
+import Login from './login/page';
 
 export default function Home() {
-  // const isLogin = useSelector((state) => state.user.isLogin);
-  const [isLoaded, setisLoaded] = useState(false);
-  const router = useRouter();
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const nickname = useSelector((state) => state.user.nickname);
+
   const dispatch = useMemberDispatch();
+
   const colorPalette = ['#B02BFF', '#FF127C', '#FFBB19', '#ADE600', '#00A6FF', '#00C6A1'];
   const [teamList, setTeamList] = useState([]);
   const [scheduleList, setScheduleList] = useState([]);
-
-  useEffect(() => {
-    if (localStorage.getItem('accessToken') === null) {
-      router.push('/login');
-    } else {
-      setisLoaded(true);
-    }
-  }, []);
 
   const fetchData = async () => {
     const {
@@ -56,6 +50,12 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (isLogin) {
+      fetchData();
+    }
+  }, [isLogin]);
+
+  useEffect(() => {
     dispatch({
       type: 'SET_TEAMLIST',
       teamList: teamList,
@@ -71,23 +71,19 @@ export default function Home() {
     console.log(scheduleList);
   }, [scheduleList]);
 
-  useEffect(() => {
-    if (isLoaded) {
-      fetchData();
-    }
-  }, [isLoaded]);
-
-  return (
-    <>
-      {isLoaded ? (
-        <>
-          <div className="w-full bg-[#F4F6FA]">
-            <MyPage params={{ id: 'test' }} />
-          </div>
-        </>
-      ) : (
-        <div>로딩중</div>
-      )}
-    </>
-  );
+  if (isLogin) {
+    return (
+      <>
+        <div className="w-full bg-[#F4F6FA]">
+          <MyPage params={{ id: nickname }} />
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <div className="w-full bg-[#F4F6FA] h-[93vh]">
+        <Login />
+      </div>
+    );
+  }
 }

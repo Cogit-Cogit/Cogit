@@ -8,7 +8,7 @@ export const userSlice = createSlice({
     nickname: '',
     gitUrl: '',
     profileImage: '',
-    isLogin: true,
+    isLogin: false,
   },
   reducers: {
     login: (state, action) => {
@@ -18,14 +18,6 @@ export const userSlice = createSlice({
       state.gitUrl = action.payload.gitUrl;
       state.profileImage = action.payload.profileImage;
       state.isLogin = true;
-
-      if (localStorage.getItem('cogit')) {
-        localStorage.removeItem('cogit');
-      }
-
-      if (localStorage.getItem('cogit_member')) {
-        localStorage.removeItem('cogit_member');
-      }
     },
 
     logout: (state) => {
