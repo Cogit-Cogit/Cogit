@@ -37,7 +37,8 @@ export default function Home() {
       ...data.flatMap(({ teamId, teamName, scheduleList }) =>
         scheduleList.map(({ scheduleId, scheduleName, scheduleStartAt, scheduleEndAt }) => ({
           id: scheduleId,
-          calendarId: 'qweqwe',
+          teamId: teamId,
+          calendarId: nickname,
           title: scheduleName,
           category: 'allday',
           start: scheduleStartAt,

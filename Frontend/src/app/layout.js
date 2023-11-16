@@ -1,3 +1,4 @@
+import './globals.css';
 import React from 'react';
 import localFont from 'next/font/local';
 import Header from './Header';

@@ -6,6 +6,7 @@ function GitHubLoginButton() {
   const GITHUB_CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
   const REDIRECT_URL =
     'https://cogit.kr/redirect&scope=repo admin:repo_hook admin:org admin:public_key admin:org_hook user project';
+    // 'http://localhost:3000/redirect&scope=repo admin:repo_hook admin:org admin:public_key admin:org_hook user project';
   const githubURL = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URL}`;
 
   return (
