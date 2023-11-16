@@ -19,7 +19,7 @@ function InputTitle({ children, className }) {
 
 function InputWrapper({ children, className }) {
   return (
-    <div className={classnames('flex flex-row mt-1 border-b-2 border-gray-400', className)}>
+    <div className={classnames('flex flex-row mt-1 ', className)}>
       {children}
     </div>
   );
@@ -32,7 +32,7 @@ const InputSection = forwardRef(function InputSection(
   return (
     <input
       className={classnames(
-        'pb-1 mr-1 text-xl font-semibold text-black bg-transparent placeholder-hover focus:outline-0 focus:placeholder-transparent',
+        'pb-1 mr-1 text-xl font-semibold text-black bg-transparent placeholder-hover focus:outline-0 focus:placeholder-transparent border-b-2 border-gray-400 w-full',
         className,
       )}
       name={name}

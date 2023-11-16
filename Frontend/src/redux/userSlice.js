@@ -28,8 +28,8 @@ export const userSlice = createSlice({
       state.profileImage = '';
       state.isLogin = false;
 
-      localStorage.removeItem('at');
-      localStorage.removeItem('rt');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
     },
 
     updateNickname: (state, action) => {

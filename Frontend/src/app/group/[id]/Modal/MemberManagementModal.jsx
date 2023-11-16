@@ -21,7 +21,13 @@ function MemberManagementModal({ isOpen, onClose, onClickAddMember, members }) {
           <div className="my-4 flex flex-col items-center h-[80%] overflow-auto">
             <div className="grid grid-cols-4 my-4 gap-x-8">
               {members.map((member, idx) => {
-                return <MemberCard nickname={member.memberName} key={idx} />;
+                return (
+                  <MemberCard
+                    nickname={member.memberName}
+                    url={member.memberProfileImage}
+                    key={idx}
+                  />
+                );
               })}
             </div>
           </div>

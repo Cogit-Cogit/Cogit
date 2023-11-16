@@ -1,27 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from '@/components/Modal';
 import Button from '@/components/Button';
 import AddAlgorithmQuest from './AddAlgorithmQuest';
 import PlusIcon from '@/icons/plus.svg';
-
 import CloseIcon from '@/icons/close.svg';
+import axios from '@/api/index';
 
-function QuestModal({ isOpen, onClose }) {
-  const [data, setData] = useState([]);
+const QuestModal = ({ isOpen, onClose, scheduleId, fetchSchduelQuest }) => {
+  const [inputList, setInputList] = useState([
+    {
+      platform: 'BOJ',
+      questNumber: '',
+    },
+  ]);
 
   const onClickClose = () => {
     onClose();
   };
+
+  const fetchQuestAdd = async () => {
+    const {
+      data: { data },
+    } = await axios.post(`/schedule/quest/add`, {
+      scheduleId,
+      algorithmQuestList: inputList,
+    });
+    fetchSchduelQuest(scheduleId);
+  };
+
   const onClickAddQuest = () => {
+    fetchQuestAdd();
     onClose();
   };
+
   const onCreate = () => {
-    const newQuest = {};
-    setData([newQuest, ...data]);
+    setInputList([
+      ...inputList,
+      {
+        platform: 'BOJ',
+        questNumber: '',
+      },
+    ]);
   };
   const onClickDelete = () => {
-    const newList = data.filter;
-    setData(newList);
+    setInputList([]);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const arr = name.split(' ');
+    console.log(arr[0] + ' : ' + arr[1]);
+
+    if (arr[0] == 'platform') {
+      inputList[parseInt(arr[1])].platform = value;
+      setInputList([...inputList]);
+    } else {
+      if (!isNaN(value)) {
+        inputList[parseInt(arr[1])].questNumber = value;
+        setInputList([...inputList]);
+      } else {
+        alert('숫자로 입력해주세요.');
+      }
+    }
   };
 
   return (
@@ -46,8 +86,8 @@ function QuestModal({ isOpen, onClose }) {
               </Button>
             </div>
             <div className="w-11/12 h-[320px] overflow-auto scrollbar-default bg-white rounded-large mb-3">
-              {data.map((quest, idx) => {
-                return <AddAlgorithmQuest key={idx} index={idx} />;
+              {inputList.map((quest, idx) => {
+                return <AddAlgorithmQuest key={idx} index={idx} handleChange={handleChange} />;
               })}
             </div>
             <Button
@@ -61,6 +101,6 @@ function QuestModal({ isOpen, onClose }) {
       </Modal.Dimmed>
     </Modal>
   );
-}
+};
 
 export default QuestModal;

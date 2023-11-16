@@ -15,8 +15,8 @@ function page() {
   const sendCodeToBackend = async (code) => {
     const bearer = process.env.NEXT_PUBLIC_BEARER;
     try {
-      // const response = await fetch(`http://localhost:8080/auth/regist?code=${code}`, {
-      const response = await fetch(`https://cogit.kr/api/auth/regist?code=${code}`, {
+      const response = await fetch(`http://localhost:8080/auth/regist?code=${code}`, {
+        // const response = await fetch(`https://cogit.kr/api/auth/regist?code=${code}`, {
         method: 'GET',
         // headers: {
         //   Authorization: `Bearer ${bearer}`,
@@ -43,7 +43,7 @@ function page() {
               profileImage: loginInfo.memberProfileImage,
               isLogin: true,
             }),
-          console.log('after dispatch')
+            console.log('after dispatch'),
           );
           console.log(res.data);
         });
@@ -63,8 +63,8 @@ function page() {
       const accessToken = cogit.Authorization;
       const refreshToken = cogit.RefreshToken;
 
-      localStorage.setItem('at', accessToken);
-      localStorage.setItem('rt', refreshToken);
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
 
       dispatch(
         login({

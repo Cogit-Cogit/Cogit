@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import RemoveIcon from '@/icons/remove.svg';
 
-function MemberCard({ nickname }) {
+function MemberCard({ nickname, url }) {
   const [isHovering, setIsHovering] = useState(false);
 
   const handleMouseOver = () => {
@@ -24,7 +24,7 @@ function MemberCard({ nickname }) {
             <RemoveIcon width={60} height={60} />
           </div>
         )}
-        <img className="pt-10 m-10" src="/images/cogit.png" width={60} height={60} />
+        <img className="pt-10 m-10" src={url} width={60} height={60} />
         <p className="pb-4 mt-5 text-xl text-center">{nickname}</p>
       </div>
     </div>

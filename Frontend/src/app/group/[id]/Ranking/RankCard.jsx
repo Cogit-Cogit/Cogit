@@ -1,11 +1,11 @@
 import React from 'react';
 
-const RankCard = ({ nickname, index }) => {
+const RankCard = ({ nickname, idx, url }) => {
   return (
-    <div className="w-20 mx-10">
-      <img className="m-auto" src="/images/cogit.png" width={40} height={40} />
-      <div className="px-4 py-3 text-center">{nickname}</div>
-      <div className="px-4 text-center">{index + 1} 등</div>
+    <div className="items-center w-20 mx-10">
+      <img className="m-auto" src={`${url}`} width={60} height={60} />
+      <div className="px-4 py-1 ">{nickname}</div>
+      <div className="px-4 text-center">{idx + 1} 등</div>
     </div>
   );
 };

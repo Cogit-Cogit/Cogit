@@ -2,17 +2,39 @@ import React, { useState } from 'react';
 import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
 import Button from '@/components/Button';
+import Moment from 'moment';
+import 'moment/locale/ko';
+import axios from '@/api/index';
 
-function ScheduleModal({ isOpen, onClose }) {
+function ScheduleModal({ isOpen, onClose, teamId }) {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [scheduleName, setScheduleName] = useState();
+
   const onClickClose = () => {
     onClose();
   };
   const onClickAddSchedule = () => {
+    fetchScheduleAdd();
+
     onClose();
   };
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const handleChange = (e) => {
+    setScheduleName(e.target.value);
+  };
+
+  const fetchScheduleAdd = async () => {
+    const {
+      data: { data },
+    } = await axios.post(`/schedule/add`, {
+      studyId: teamId,
+      scheduleName,
+      algorithmQuestList: [],
+      scheduleStart: Moment(startDate).format('YYYY-MM-DD'),
+      scheduleEnd: Moment(endDate).format('YYYY-MM-DD'),
+    });
+  };
 
   return (
     <Modal isOpen={isOpen}>
@@ -26,9 +48,10 @@ function ScheduleModal({ isOpen, onClose }) {
                 <Input.Title>일정 이름</Input.Title>
                 <Input.Wrapper className="justify-between">
                   <Input.Section
-                    name="firstInvestmentAmount"
+                    name="scheduleName"
                     placeholder="일정 이름 입력"
                     type="input"
+                    onChange={handleChange}
                   />
                 </Input.Wrapper>
               </Input>

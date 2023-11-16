@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Section } from '@/components/Section';
 import CodeIcon from '@/icons/code.svg';
 import SearchIcon from '@/icons/search.svg';
@@ -10,70 +10,27 @@ import { CodeList } from './CodeList';
 import CodeDetail from './CodeDetail';
 
 function MyCode() {
-  const isList = false;
+  const isList = true;
+  const [Operator, setOperator] = useState({
+    algorithmQuestNumber: '',
+    platform: '',
+    page: 0,
+  });
+  const [myCodeList, setMyCodeList] = useState([]);
+  const [value, setValue] = useState();
 
-  const myCodeList = [
-    {
-      codeId: 23,
-      algorithmQuestId: 3,
-      algorithmQuestPlatform: 'Baekjoon',
-      createdAt: '2023-10-30',
-      codeAnalyze: 'https://amazons3.northeastasia.com/cogit',
-      codeLanguage: 'Java',
-      codeRunningTime: 323.8,
-      codeSolved: true,
-    },
-    {
-      codeId: 23,
-      algorithmQuestId: 3,
-      algorithmQuestPlatform: 'Baekjoon',
-      createdAt: '2023-10-30',
-      codeAnalyze: 'https://amazons3.northeastasia.com/cogit',
-      codeLanguage: 'Java',
-      codeRunningTime: 323.8,
-      codeSolved: true,
-    },
-    {
-      codeId: 23,
-      algorithmQuestId: 3,
-      algorithmQuestPlatform: 'Baekjoon',
-      createdAt: '2023-10-30',
-      codeAnalyze: 'https://amazons3.northeastasia.com/cogit',
-      codeLanguage: 'Java',
-      codeRunningTime: 323.8,
-      codeSolved: false,
-    },
-    {
-      codeId: 23,
-      algorithmQuestId: 3,
-      algorithmQuestPlatform: 'Baekjoon',
-      createdAt: '2023-10-30',
-      codeAnalyze: 'https://amazons3.northeastasia.com/cogit',
-      codeLanguage: 'Java',
-      codeRunningTime: 323.8,
-      codeSolved: true,
-    },
-    {
-      codeId: 23,
-      algorithmQuestId: 3,
-      algorithmQuestPlatform: 'Baekjoon',
-      createdAt: '2023-10-30',
-      codeAnalyze: 'https://amazons3.northeastasia.com/cogit',
-      codeLanguage: 'Java',
-      codeRunningTime: 323.8,
-      codeSolved: false,
-    },
-    {
-      codeId: 23,
-      algorithmQuestId: 3,
-      algorithmQuestPlatform: 'Baekjoon',
-      createdAt: '2023-10-30',
-      codeAnalyze: 'https://amazons3.northeastasia.com/cogit',
-      codeLanguage: 'Java',
-      codeRunningTime: 323.8,
-      codeSolved: false,
-    },
-  ];
+  const fetchFindCode = async () => {
+    const {
+      data: { data },
+    } = await axios.get(
+      `/code/my-history?algorithmQuestNumber=${Operator.algorithmQuestNumber}&platform=${Operator.platform}&page=${Operator.page}`,
+    );
+    setMyCodeList(data);
+  };
+
+  const onChange = (e) => {
+    setOperator((prev) => ({ ...prev, platform: e.target.value }));
+  };
 
   return (
     <div>
@@ -85,7 +42,19 @@ function MyCode() {
           </Section.Title>
           <Section.Container>
             <Input className="w-[90%] px-3">
-              <Input.Wrapper className="w-[30%]">
+              <Input.Wrapper className="w-[70%]">
+                <select
+                  value={value}
+                  className="mr-5 text-center bg-primary rounded-small"
+                  onChange={onChange}
+                >
+                  <option value={value} className="bg-white rounded-small">
+                    백준
+                  </option>
+                  <option value={value} className="bg-white rounded-small">
+                    프로그래머스
+                  </option>
+                </select>
                 <Input.Unit>
                   <SearchIcon alt="SearchIcon" width={30} height={30} />
                 </Input.Unit>

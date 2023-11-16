@@ -3,46 +3,54 @@
 import React, { useEffect, useState } from 'react';
 import Ranking from './Ranking/Ranking';
 import Schedule from './Schedule/Schedule';
-import ToDoList from './ToDo/ToDoList';
+import AlgoSite from './AlgoSite/AlgoSite';
 import Button from '@/components/Button';
 import SettingIcon from '@/icons/setting.svg';
 import ExitIcon from '@/icons/exit.svg';
 import GroupIcon from '@/icons/group.svg';
 import MemberManagementModal from './Modal/MemberManagementModal';
 import MemberAddModal from './Modal/MemberAddModal';
+import MemberDeleteModal from './Modal/MemberDeleteModal';
 import axios from '@/api/index';
+import { useMemberState } from '@/app/MemberContext';
+import { useSelector } from 'react-redux';
 
 function Group({ params }) {
   const [showMemberManagementModal, setMemberManagementModal] = useState(false);
   const [showMemberAddModal, setMemberAddModal] = useState(false);
+  const [showMemberDeleteModal, setMemberDeleteModal] = useState(false);
+  const userId = useSelector((state) => state.user.id);
+
+  const { teamList } = useMemberState();
+
   const [teamInfo, setTeamInfo] = useState({
     teamId: '',
     teamName: '',
-    scheduleList: [
-      {
-        scheduleId: '6',
-        scheduleName: '',
-        scheduleStartAt: '',
-        scheduleEndAt: '',
-      },
-    ],
   });
-  const teamId = params.id;
+
   const [members, setMembers] = useState([]);
 
   const fetchTeamMember = async () => {
     const {
       data: { data },
-    } = await axios.get(`/study/memberList?teamId=${teamId}`);
+    } = await axios.get(`/study/memberList?teamId=${params.id}`);
     setMembers(data);
   };
 
-  const fetchTeamInfo = async () => {
-    const {
-      data: { data },
-    } = await axios.get(`/schedule/team?teamId=${teamId}`);
-    setTeamInfo(data);
-    console.log(teamInfo.scheduleList);
+  const TeamInfo = () => {
+    console.log(teamList);
+    {
+      teamList.map((team) => {
+        console.log(team.id);
+        if (team.id == params.id) {
+          setTeamInfo({
+            teamId: team.id,
+            teamName: team.teamName,
+          });
+          return;
+        }
+      });
+    }
   };
 
   const onClickMemberManagementModal = () => {
@@ -51,12 +59,26 @@ function Group({ params }) {
 
   const onClickAddMember = () => {
     setMemberAddModal((prev) => !prev);
-    // setMemberManagementModal((prev) => !prev);
+    setMemberManagementModal((prev) => !prev);
+  };
+
+  const onClickMemberDeleteModal = () => {
+    setMemberDeleteModal((prev) => !prev);
+  };
+
+  const onClickDeleteMember = async () => {
+    const {
+      data: { data },
+    } = await axios.delete(`/study/leave`, {
+      teamId: teamInfo.teamId,
+      memberId: userId,
+    });
   };
 
   useEffect(() => {
-    fetchTeamInfo();
+    TeamInfo();
     fetchTeamMember();
+    console.log(teamList);
   }, []);
 
   return (
@@ -73,7 +95,10 @@ function Group({ params }) {
           >
             <SettingIcon alt="settingIcon" width={36} height={36} />
           </Button>
-          <Button className="p-1 mb-3 rounded-small bg-hover hover:bg-warning">
+          <Button
+            className="p-1 mb-3 rounded-small bg-hover hover:bg-warning"
+            onClick={onClickMemberDeleteModal}
+          >
             <ExitIcon alt="settingIcon" width={36} height={36} />
           </Button>
           {showMemberManagementModal && (
@@ -85,20 +110,27 @@ function Group({ params }) {
             />
           )}
           {showMemberAddModal && (
-            <MemberAddModal isOpen={showMemberAddModal} onClose={onClickAddMember} />
+            <MemberAddModal
+              isOpen={showMemberAddModal}
+              onClose={onClickAddMember}
+              teamId={teamInfo.teamId}
+            />
+          )}
+          {showMemberDeleteModal && (
+            <MemberDeleteModal
+              isOpen={showMemberDeleteModal}
+              onClose={() => setMemberDeleteModal(false)}
+              onClickDeleteMember={onClickDeleteMember}
+            />
           )}
         </div>
       </div>
       <div className="flex justify-center w-full">
-        <Ranking />
+        <Ranking teamId={params.id} />
       </div>
       <div className="flex justify-between w-full h-[500px]">
-        <Schedule
-          members={members}
-          scheduleId={teamInfo.scheduleList[0].scheduleId}
-          scheduleName={teamInfo.scheduleList[0].scheduleName}
-        />
-        <ToDoList />
+        <Schedule members={members} teamId={params.id} />
+        <AlgoSite />
       </div>
     </div>
   );

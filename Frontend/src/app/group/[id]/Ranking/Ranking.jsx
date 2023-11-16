@@ -1,13 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Section } from '@/components/Section';
 import RankCard from './RankCard';
 import RankingIcon from '@/icons/ranking.svg';
+import axios from '@/api/index';
 
-const members = ['이현구', '연제정', '박성준', '주창훈', '박현철', '임하은'];
+const Ranking = ({ teamId }) => {
+  const [members, setMembers] = useState([]);
 
-const Ranking = () => {
+  const fetchTeamRanking = async () => {
+    const {
+      data: { data },
+    } = await axios.get(`/study/member/ranking?teamId=${teamId}`);
+    setMembers(data);
+  };
+
+  useEffect(() => {
+    fetchTeamRanking();
+  }, []);
+
   return (
     <Section className="w-full p-[20px] mt-[20px] mr-[10px]">
       <Section.Title>
@@ -19,7 +31,12 @@ const Ranking = () => {
       <Section.Container>
         <div className="flex justify-center mb-4">
           {members.map((member, idx) => (
-            <RankCard nickname={member} key={idx}></RankCard>
+            <RankCard
+              nickname={member.memberName}
+              url={member.memberProfileImage}
+              key={idx}
+              idx={idx}
+            ></RankCard>
           ))}
         </div>
       </Section.Container>
