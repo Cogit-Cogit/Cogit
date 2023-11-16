@@ -6,6 +6,7 @@ import MyPage from './mypage/[id]/page';
 import { useMemberDispatch } from '@/app/MemberContext';
 import axios from '@/api/index';
 import Login from './login/page';
+import Sidebar from './Sidebar';
 
 export default function Home() {
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -20,7 +21,7 @@ export default function Home() {
   const fetchData = async () => {
     const {
       data: { data },
-    } = await axios.get('/schedule/myStudy/');
+    } = await axios.get('/schedule/my-study/');
 
     console.log(data);
 
@@ -75,8 +76,11 @@ export default function Home() {
   if (isLogin) {
     return (
       <>
-        <div className="w-full bg-[#F4F6FA]">
-          <MyPage params={{ id: nickname }} />
+        <div className="flex">
+          <Sidebar />
+          <div className="w-full bg-[#F4F6FA]">
+            <MyPage params={{ id: nickname }} />
+          </div>
         </div>
       </>
     );

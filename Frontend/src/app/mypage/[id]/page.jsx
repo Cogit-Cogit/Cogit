@@ -3,7 +3,6 @@
 import RadioButton from '@/components/RadioButton';
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
-import Sidebar from './Sidebar';
 import { useMemberState } from '@/app/MemberContext';
 
 function MyPage({ params }) {
@@ -35,27 +34,24 @@ function MyPage({ params }) {
   };
 
   return (
-    <div className="flex">
-      <Sidebar nickname={nickname} />
-      <div className="w-5/6 p-3 m-4 bg-white shadow-lg rounded-large">
-        <div className="flex items-center">
-          <div className="flex justify-center mb-1 text-2xl font-bold text-hover">
-            {nickname}'s Calendar
-          </div>
-          <div className="flex justify-around pb-1">
-            {teamList.map((team) => (
-              <RadioButton
-                key={team.id}
-                text={team.teamName}
-                className="mx-4"
-                onClick={() => handleRadioButtonClick(team.id)}
-                isClicked={clickedButton === team.id}
-              />
-            ))}
-          </div>
+    <div className="p-3 m-4 bg-white shadow-lg rounded-large">
+      <div className="flex items-center">
+        <div className="flex justify-center mb-1 text-2xl font-bold text-hover">
+          {nickname}'s Calendar
         </div>
-        <DynamicCalendar scheduleList={scheduleList} />
+        <div className="flex justify-around pb-1">
+          {teamList.map((team) => (
+            <RadioButton
+              key={team.id}
+              text={team.teamName}
+              className="mx-4"
+              onClick={() => handleRadioButtonClick(team.id)}
+              isClicked={clickedButton === team.id}
+            />
+          ))}
+        </div>
       </div>
+      <DynamicCalendar scheduleList={scheduleList} />
     </div>
   );
 }
