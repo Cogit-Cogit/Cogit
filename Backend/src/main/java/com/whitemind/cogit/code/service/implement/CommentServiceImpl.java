@@ -1,6 +1,7 @@
 package com.whitemind.cogit.code.service.implement;
 
 import com.whitemind.cogit.code.dto.request.WriteCommentRequest;
+import com.whitemind.cogit.code.dto.response.GetCommentResponse;
 import com.whitemind.cogit.code.entity.Code;
 import com.whitemind.cogit.code.entity.Comment;
 import com.whitemind.cogit.code.repository.CodeRepository;
@@ -15,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +42,21 @@ public class CommentServiceImpl implements CommentService {
                 .build();
 
         commentRepository.save(comment);
+    }
+
+    @Override
+    public List<GetCommentResponse> getCommentList(int codeId) {
+        List<Comment> commentList = commentRepository.findByCode(codeRepository.findById(codeId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_CODE_EXCEPTION)));
+
+        return commentList.stream().map(comment -> GetCommentResponse.builder()
+                .commentId(comment.getCommentId())
+                .memberId(comment.getMember().getMemberId())
+                .memberNickname(comment.getMember().getMemberNickname())
+                .memberProfileImage(comment.getMember().getMemberProfileImage())
+                .commentLineNumber(comment.getCommentLineNumber())
+                .commentContent(comment.getCommentContent())
+                .createAt(comment.getCreatedAt())
+                .build()).collect(Collectors.toList());
     }
 }
