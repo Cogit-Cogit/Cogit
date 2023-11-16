@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class WriteCommentRequest {
 
     private int codeId;
-    private int memberid;
     private int commentLineNumber;
     private String commentContent;
 }

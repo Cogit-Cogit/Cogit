@@ -244,7 +244,7 @@ public class GithubServiceImple implements GithubService {
         JSONObject jObject = new JSONObject(responseData);
 
         // TODO 문제 저장할 정확한 주소 정해야함
-        return new GitBlobResponseDto(code.getAlgorithmQuestPlatform() + "/" +code.getAlgorithmQuestNumber(), jObject.getString("sha"), "100644", "blob");
+        return new GitBlobResponseDto(code.getAlgorithmQuestPlatform() + "/" +code.getAlgorithmQuestNumber() + "." + code.getCodeFileExtension(), jObject.getString("sha"), "100644", "blob");
     }
 
     public GitRefResponseDto getRef(Member member) throws IOException {
