@@ -12,11 +12,15 @@ function AddTeam({ isOpen, onClose, fetchData }) {
   };
 
   const onClickAddTeam = async () => {
-    await axios.post('/study/create', {
-      studyName: teamNameInput,
-    });
-    fetchData();
-    onClose();
+    if (!teamNameInput) {
+      alert('그룹 이름을 입력해주세요.')
+    } else {
+      await axios.post('/study/create', {
+        studyName: teamNameInput,
+      });
+      fetchData();
+      onClose();
+    }
   };
 
   const handleChange = (e) => {
@@ -43,7 +47,7 @@ function AddTeam({ isOpen, onClose, fetchData }) {
               </Input.Wrapper>
             </Input>
             <Button
-              className="w-1/2 text-2xl text-white h-1/10 mx-7 bg-primary rounded-large"
+              className="w-1/2 text-2xl text-white h-1/10 mx-7 bg-hover rounded-large"
               onClick={onClickAddTeam}
             >
               생성하기

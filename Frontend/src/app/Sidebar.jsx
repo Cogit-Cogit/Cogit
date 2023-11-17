@@ -60,11 +60,13 @@ function Sidebar() {
               <PlusIcon width={24} height={24} />
             </Button>
           </div>
-          {updateTeamList.map((team) => (
-            <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover" key={team.id}>
-              <Link href={`/group/${team.id}`}>{team.teamName}</Link>
-            </Button>
-          ))}
+          <div className="flex flex-col h-[50vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-hover scrollbar-track-primary scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+            {updateTeamList.map((team) => (
+              <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover" key={team.id}>
+                <Link href={`/group/${team.id}`}>{team.teamName}</Link>
+              </Button>
+            ))}
+          </div>
           <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover">
             <Link href="/mycode">내 코드보기</Link>
           </Button>

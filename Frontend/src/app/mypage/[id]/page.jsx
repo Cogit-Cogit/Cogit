@@ -35,16 +35,16 @@ function MyPage({ params }) {
 
   return (
     <div className="p-3 m-4 bg-white shadow-lg rounded-large">
-      <div className="flex items-center">
+      <div className="flex items-center justify-around w-full h-[6vh]">
         <div className="flex justify-center mb-1 text-2xl font-bold text-hover">
           {nickname}'s Calendar
         </div>
-        <div className="flex justify-around pb-1">
+        <div className="flex w-[60vw] h-full overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-hover scrollbar-track-primary scrollbar-thumb-rounded-full scrollbar-track-rounded-full pb-1">
           {teamList.map((team) => (
             <RadioButton
               key={team.id}
               text={team.teamName}
-              className="mx-4"
+              className="mx-3"
               onClick={() => handleRadioButtonClick(team.id)}
               isClicked={clickedButton === team.id}
             />
