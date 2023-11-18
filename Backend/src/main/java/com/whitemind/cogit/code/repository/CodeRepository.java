@@ -33,5 +33,5 @@ public interface CodeRepository extends JpaRepository<Code, Integer> {
             "where c.member.memberId = :memberId " +
             "and c.algorithmQuest.algorithmQuestId = :algorithmQuestId " +
             "order by c.codeId desc")
-    int findFirstByMemberIdAndAlgorithmQuestId(@Param("memberId") int memberId, @Param("algorithmQuestId") int algorithmQuestId);
+    List<Integer> findFirstByMemberIdAndAlgorithmQuestId(@Param("memberId") int memberId, @Param("algorithmQuestId") int algorithmQuestId);
 }

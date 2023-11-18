@@ -163,7 +163,9 @@ public class CodeServiceImpl implements CodeService {
         Member member = memberRepository.findMembersByMemberId((int) request.getAttribute("memberId"));
 
         // 문제 번호, 문제 플랫폼으로 algorithmQuest 조회
-        List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findByQuestIdAndPlatform(algorithmQuestNumber, setPlatform(platform));
+        List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findByQuestIdAndPlatform(setPlatform(platform))
+                .stream().filter(algorithmQuest -> Integer.toString(algorithmQuest.getAlgorithmQuestNumber()).contains(Integer.toString(algorithmQuestNumber)))
+                .collect(Collectors.toList());
 
         List<GetCodeHistoryResponse> getCodeHistoryResponseList = new ArrayList<>();
 
@@ -201,7 +203,7 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public int getMemberCodeId(int memberId, int algorithmQuestId) {
+    public List<Integer> getMemberCodeId(int memberId, int algorithmQuestId) {
         return codeRepository.findFirstByMemberIdAndAlgorithmQuestId(memberId, algorithmQuestId);
     }
 
