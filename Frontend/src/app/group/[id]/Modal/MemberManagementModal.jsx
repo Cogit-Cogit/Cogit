@@ -23,7 +23,7 @@ function MemberManagementModal({ isOpen, onClose, onClickAddMember, members }) {
               {members.map((member, idx) => {
                 return (
                   <MemberCard
-                    nickname={member.memberName}
+                    nickname={member.memberNickname}
                     url={member.memberProfileImage}
                     key={idx}
                   />

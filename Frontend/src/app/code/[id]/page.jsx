@@ -1,16 +1,35 @@
+'use client';
+
 import { Section } from '@/components/Section';
 import React, { useState, useEffect } from 'react';
 import CodeIcon from '@/icons/code.svg';
 import CommentIcon from '@/icons/comment.svg';
-import PrevIcon from '@/icons/prev.svg';
+import HomeIcon from '@/icons/home.svg';
 import Comment from './Comment';
 import Button from '@/components/Button';
+import axios from '@/api/index';
+import Sidebar from '@/app/Sidebar';
+import { useRouter } from 'next/navigation';
 
-function CodeDetail() {
+function Code({params}) {
+  const [codeDetail, setCodeDetail] = useState({
+    codeId:0,
+    algorithmQuestId:0,
+    algorithmQuestPlatform:'',
+    memberId: 0,
+    codeContent: '',
+    createAt: '',
+    codeAnalyze: '',
+    codeLanguage: '',
+    codeRunningTime: 0.0,
+    codeSolved: false
+  });
+
   const [codeLine, setCodeLine] = useState([]);
   const [codeActive, setCodeActive] = useState(-1);
-  const codeee =
-    'import java.util.*;\n​\nclass Solution {\n    public int solution(int[][] targets) {\n        int answer = 0;\n        Arrays.sort(targets, (o1, o2) -> {\n            if(o1[0] == o2[0]){\n                return o2[1] - o1[1];\n            }\n            return o1[0] - o2[0];\n        });\n        \n        for(int i = 0; i < targets.length; i++){\n            int end = targets[i][1];\n            \n            while(i < targets.length - 1 && targets[i + 1][0] < end){\n                end = Math.min(end, targets[i + 1][1]);\n                i++;\n            }\n            answer++;\n        }\n        return answer;\n    }\n}';
+
+  const router = useRouter();
+
 
   const toggleActive = (e) => {
     setCodeActive((prev) => {
@@ -21,11 +40,41 @@ function CodeDetail() {
     });
   };
 
+  const onClickComment = (e) => {
+    console.log(e)
+    setCodeActive(e);
+  }
+
+  const fetchGetCode = async () => {
+    const {
+      data: { data },
+    } = await axios.get(`/code/detail?codeId=${params.id}`);
+    setCodeDetail(data);
+  };
+
+  const registerComment = async (contents) => {
+    await axios.post(`/code/detail/comment`, {
+      codeId:params.id,
+      commentLineNumber:codeActive,
+      commentContent:contents,
+    });
+  };
+
+  const moveToHome = () => {
+    router.push('/')
+  }
   useEffect(() => {
-    setCodeLine(codeee.toString().split('\n'));
+    fetchGetCode();
   }, []);
 
+  useEffect(() => {
+    setCodeLine(codeDetail.codeContent.split('\n'));
+  }, [codeDetail]);
+
   return (
+    <div className="flex">
+    <Sidebar />
+    <div className="w-full bg-[#F4F6FA]">
     <div className="flex justify-center">
       <Section className="h-[86vh] w-[50vw] p-5">
         <Section.Title className="justify-between">
@@ -33,8 +82,8 @@ function CodeDetail() {
             <CodeIcon alt="CodeIcon" width={36} height={36} />
             <p className="ml-2">코드</p>
           </div>
-          <Button className="p-1 rounded-small bg-primary">
-            <PrevIcon alt="prevIcon" width={36} height={36} />
+          <Button className="p-1 rounded-small bg-primary" onClick={moveToHome}>
+            <HomeIcon alt="homeIcon" width={36} height={36} />
           </Button>
         </Section.Title>
         <div className="h-[80%]">
@@ -63,11 +112,13 @@ function CodeDetail() {
           <p className="ml-2">댓글</p>
         </Section.Title>
         <Section.Container>
-          <Comment />
+          <Comment codeId={params.id} registerComment={registerComment} onClickComment={onClickComment}/>
         </Section.Container>
       </Section>
+    </div>
+    </div>
     </div>
   );
 }
 
-export default CodeDetail;
+export default Code;

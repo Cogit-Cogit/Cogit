@@ -14,6 +14,7 @@ import MemberDeleteModal from './Modal/MemberDeleteModal';
 import axios from '@/api/index';
 import { useMemberState } from '@/app/MemberContext';
 import { useSelector } from 'react-redux';
+import Sidebar from '@/app/Sidebar';
 
 function Group({ params }) {
   const [showMemberManagementModal, setMemberManagementModal] = useState(false);
@@ -59,7 +60,7 @@ function Group({ params }) {
 
   const onClickAddMember = () => {
     setMemberAddModal((prev) => !prev);
-    setMemberManagementModal((prev) => !prev);
+    setMemberManagementModal(false);
   };
 
   const onClickMemberDeleteModal = () => {
@@ -70,9 +71,12 @@ function Group({ params }) {
     const {
       data: { data },
     } = await axios.delete(`/study/leave`, {
-      teamId: teamInfo.teamId,
-      memberId: userId,
+      data : {
+        memberId: userId,
+        teamId: teamInfo.teamId,
+      },
     });
+
   };
 
   useEffect(() => {
@@ -82,6 +86,9 @@ function Group({ params }) {
   }, []);
 
   return (
+    <div className="flex">
+    <Sidebar />
+    <div className="w-full bg-[#F4F6FA]">
     <div className="m-7">
       <div className="flex justify-between">
         <div className="flex pt-3 pl-2">
@@ -92,37 +99,37 @@ function Group({ params }) {
           <Button
             className="p-1 mb-3 mr-3 rounded-small bg-primary"
             onClick={onClickMemberManagementModal}
-          >
+            >
             <SettingIcon alt="settingIcon" width={36} height={36} />
           </Button>
           <Button
             className="p-1 mb-3 rounded-small bg-hover hover:bg-warning"
             onClick={onClickMemberDeleteModal}
-          >
-            <ExitIcon alt="settingIcon" width={36} height={36} />
+            >
+            <ExitIcon alt="exitIcon" width={36} height={36} />
           </Button>
           {showMemberManagementModal && (
             <MemberManagementModal
-              isOpen={showMemberManagementModal}
-              onClose={() => setMemberManagementModal(false)}
-              onClickAddMember={onClickAddMember}
-              members={members}
+            isOpen={showMemberManagementModal}
+            onClose={() => setMemberManagementModal(false)}
+            onClickAddMember={onClickAddMember}
+            members={members}
             />
-          )}
+            )}
           {showMemberAddModal && (
             <MemberAddModal
-              isOpen={showMemberAddModal}
-              onClose={onClickAddMember}
-              teamId={teamInfo.teamId}
+            isOpen={showMemberAddModal}
+            onClose={onClickAddMember}
+            teamId={teamInfo.teamId}
             />
-          )}
+            )}
           {showMemberDeleteModal && (
             <MemberDeleteModal
-              isOpen={showMemberDeleteModal}
-              onClose={() => setMemberDeleteModal(false)}
-              onClickDeleteMember={onClickDeleteMember}
+            isOpen={showMemberDeleteModal}
+            onClose={() => setMemberDeleteModal(false)}
+            onClickDeleteMember={onClickDeleteMember}
             />
-          )}
+            )}
         </div>
       </div>
       <div className="flex justify-center w-full">
@@ -133,6 +140,8 @@ function Group({ params }) {
         <AlgoSite />
       </div>
     </div>
+            </div>
+          </div>
   );
 }
 

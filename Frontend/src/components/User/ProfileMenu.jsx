@@ -1,8 +1,11 @@
 import { createPortal } from 'react-dom';
 
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { convertNickName } from '@/util/nickname';
 
 function ProfileMenu({ onClickEditNickname, onCloseMenu, onClickLogoutModal }) {
+  const {nickname, profileImage, name} = useSelector((state) => state.user)
   const onClickEdit = () => {
     onClickEditNickname();
   };
@@ -12,7 +15,7 @@ function ProfileMenu({ onClickEditNickname, onCloseMenu, onClickLogoutModal }) {
   };
 
   const onClickRepo = () => {
-    window.open('https://cogit.kr');
+    window.open(`https://github.com/${name}/Algorithm_Study_With_Cogit`);
   };
 
   const onClickBackGround = () => {
@@ -30,19 +33,11 @@ function ProfileMenu({ onClickEditNickname, onCloseMenu, onClickLogoutModal }) {
               background: '#8D6E63',
             }}
           >
-            <span
-              className="text-3xl"
-              style={{
-                position: 'relative',
-                bottom: '0.2em',
-              }}
-            >
-              닉
-            </span>
+            <img className='rounded-small' src={profileImage}></img>
           </div>
         </div>
         <div className="mb-4">
-          <div className="text-lg text-center">안녕하세요. 닉님</div>
+          <div className="text-lg text-center">안녕하세요. {nickname}님</div>
         </div>
         <div>
           <button className="w-full p-2 hover:bg-hover" onClick={onClickEdit}>

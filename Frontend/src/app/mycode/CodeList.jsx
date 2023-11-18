@@ -15,23 +15,23 @@ function CodeListMain({ children, className }) {
 }
 
 function CodeListQNum({ children }) {
-  return <div className="flex">{children}</div>;
+  return <div className="flex w-[20%]">{children}</div>;
 }
 
 function CodeListPlatform({ children }) {
-  return <div className="">{children}</div>;
+  return <div className="w-[20%]">{children}</div>;
 }
 
 function CodeListLanguage({ children }) {
-  return <div className="">{children}</div>;
+  return <div className="w-[20%]">{children}</div>;
 }
 
 function CodeListRunningTime({ children }) {
-  return <div className="">{children}</div>;
+  return <div className="w-[20%]">{children}</div>;
 }
 
 function CodeListCreatedAt({ children }) {
-  return <div className="">{children}</div>;
+  return <div className="w-[20%]">{children}</div>;
 }
 
 function CodeListAnalyze({ children }) {

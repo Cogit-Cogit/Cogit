@@ -62,22 +62,25 @@ function Sidebar() {
           </div>
           <div className="flex flex-col h-[50vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-hover scrollbar-track-primary scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
             {updateTeamList.map((team) => (
-              <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover" key={team.id}>
-                <Link href={`/group/${team.id}`}>{team.teamName}</Link>
-              </Button>
+                <Link className="text-center py-3 my-1 text-xl rounded-large hover:bg-hover" href={`/group/${team.id}`}>
+                  <Button key={team.id}>
+                    {team.teamName}
+                  </Button>
+                </Link>
             ))}
           </div>
-          <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover">
-            <Link href="/mycode">내 코드보기</Link>
-          </Button>
-          <Button className="py-3 my-1 text-xl rounded-large hover:bg-hover">
-            <Link
-              href="https://chromewebstore.google.com/detail/%EC%BD%94%EA%B9%83%EC%BD%94%EA%B9%83-%EC%9D%B5%EC%8A%A4%ED%85%90%EC%85%98/cmjbobieohgjhfflhokcdfnhinmphojk?hl=ko"
-              target="_blank"
+          <Link className="text-center py-3 my-1 text-xl rounded-large hover:bg-hover" href="/mycode">
+            <Button>
+            내 코드보기
+            </Button>
+          </Link>
+          <Link
+            href="https://chromewebstore.google.com/detail/%EC%BD%94%EA%B9%83%EC%BD%94%EA%B9%83-%EC%9D%B5%EC%8A%A4%ED%85%90%EC%85%98/cmjbobieohgjhfflhokcdfnhinmphojk?hl=ko"
+            target="_blank"
+            className="text-center py-3 my-1 text-xl rounded-large hover:bg-hover"
             >
-              익스텐션 사용하기
-            </Link>
-          </Button>
+            <Button>익스텐션 사용하기</Button>
+          </Link>
         </div>
       </div>
       {showAddTeam && (

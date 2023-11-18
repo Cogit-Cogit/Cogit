@@ -2,16 +2,34 @@ import React, { useRef } from 'react';
 import { Modal } from '../Modal';
 import { Input } from '../Input';
 import Button from '../Button';
+import axios from '@/api/index';
+import { useDispatch } from 'react-redux';
+import { updateNickname } from '@/redux/userSlice';
 
 function EditNickname({ isOpen, onClose }) {
   const inputRef = useRef();
+  const dispatch = useDispatch();
 
   const onClickClose = () => {
     onClose();
   };
 
   const onClickChangeNickname = async () => {
+    fetchNickname();
     onClose();
+    alert('닉네임이 변경 되었습니다.')
+  };
+
+  const fetchNickname = async () => {
+    const newNickname = inputRef.current.value;
+
+    const {
+      data: { data },
+    } = await axios.patch(`/member/nickname`, {
+      memberNickname:newNickname
+    });
+
+    dispatch(updateNickname({nickname:newNickname}));
   };
 
   return (
