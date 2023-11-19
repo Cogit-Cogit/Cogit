@@ -6,10 +6,10 @@ const THead = ({ questions }) => {
     <>
       <thead>
         <tr className="bg-gray-800">
-          <th className="px-4 py-3 text-gray-300">이름</th>
+          <th className="px-4 py-3 text-base text-gray-300">이름</th>
           {questions.map((question, idx) => {
             return (
-              <th className="px-4 py-3 text-gray-300" key={idx}>
+              <th className="px-4 py-3 text-base text-gray-300" key={idx}>
                 <Link href={question.algorithmQuestUrl}>
                   {question.algorithmQuestPlatform}
                   <br />

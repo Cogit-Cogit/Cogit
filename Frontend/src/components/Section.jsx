@@ -13,8 +13,8 @@ function SectionButtonContainer({ className, children }) {
   return <div className={classnames('justify-between', className)}>{children}</div>;
 }
 
-function SectionContainer({ children }) {
-  return <div className="flex flex-col items-center">{children}</div>;
+function SectionContainer({ className, children }) {
+  return <div className={classnames(`flex flex-col items-center`, className)}>{children}</div>;
 }
 export const Section = Object.assign(SectionMain, {
   Title: SectionTitle,

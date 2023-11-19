@@ -21,11 +21,11 @@ const Ranking = ({ teamId }) => {
   }, []);
 
   return (
-    <Section className="w-full p-[20px] mt-[20px] mr-[10px]">
+    <Section className="w-full p-5 m-0">
       <Section.Title>
         <div className="flex">
-          <RankingIcon width={36} height={36} />
-          <p className="ml-2">랭킹</p>
+          <RankingIcon width={32} height={32} />
+          <p className="ml-2 text-xl">랭킹</p>
         </div>
       </Section.Title>
       <Section.Container>

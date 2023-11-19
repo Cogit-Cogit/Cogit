@@ -54,16 +54,16 @@ function Schedule({ members, teamId }) {
   }, [teamScheduleList]);
 
   return (
-    <Section className="w-[70%] h-full inline-block p-[20px] my-[20px] mr-[10px] overflow-auto">
-      <div className="flex justify-between mb-3">
+    <Section className="w-[70%] h-full m-0 shadow-lg">
+      <div className="flex justify-between mb-2 h-[18%]">
         <Section.Title className="justify-between mt-3">
           <div className="flex">
-            <ScheduleIcon width={36} height={36} />
+            <ScheduleIcon width={32} height={32} />
             {teamScheduleList.length > 0 ? (
               <select
                 name="selectSchedule"
                 value={value}
-                className="mr-5 text-center bg-white rounded-small"
+                className="mr-5 text-xl text-center bg-white rounded-small"
                 onChange={selectChange}
               >
                 {teamScheduleList.map((teamschedule) => {
@@ -79,9 +79,9 @@ function Schedule({ members, teamId }) {
             )}
           </div>
         </Section.Title>
-        <Section.ButtonList>
+        <Section.ButtonList className="flex items-center">
           <Button
-            className="items-center p-5 m-1 bg-primary rounded-small"
+            className="flex items-center p-5 m-1 h-[15%] bg-primary rounded-small"
             onClick={onClickQuestModal}
           >
             문제 추가
@@ -95,7 +95,7 @@ function Schedule({ members, teamId }) {
             />
           )}
           <Button
-            className="items-center p-5 m-1 bg-primary rounded-small"
+            className="flex items-center p-5 m-1 h-[15%] bg-primary rounded-small"
             onClick={onClickScheduleModal}
           >
             일정 추가
@@ -109,9 +109,9 @@ function Schedule({ members, teamId }) {
           )}
         </Section.ButtonList>
       </div>
-      <Section.Container>
+      <Section.Container className="w-full h-[36vh] overflow-auto scrollbar-thin scrollbar-thumb-hover scrollbar-track-primary scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
         {teamScheduleList.length > 0 ? (
-          <table className="w-[90%] text-center m-auto">
+          <table className="w-full h-full text-center">
             <THead questions={questions}></THead>
             <TBody questions={questions} members={members}></TBody>
           </table>

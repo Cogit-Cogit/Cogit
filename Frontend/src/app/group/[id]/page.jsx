@@ -132,10 +132,10 @@ function Group({ params }) {
             )}
         </div>
       </div>
-      <div className="flex justify-center w-full">
+      <div className="flex justify-center w-full mb-3">
         <Ranking teamId={params.id} />
       </div>
-      <div className="flex justify-between w-full h-[500px]">
+      <div className="flex justify-between w-full h-[47vh]">
         <Schedule members={members} teamId={params.id} />
         <AlgoSite />
       </div>

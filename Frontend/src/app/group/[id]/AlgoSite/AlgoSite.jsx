@@ -6,10 +6,10 @@ import SiteCard from './SiteCard';
 
 const AlgoSite = () => {
   return (
-    <Section className="w-[30%] h-full inline-block p-[20px] my-[20px] mr-[10px] ">
+    <Section className="w-[30%] h-full m-0 ml-3 shadow-lg">
       <Section.Title>
-        <LinkIcon width={36} height={36} />
-        <p className="ml-2">Algorithm Site</p>
+        <LinkIcon width={32} height={32} />
+        <p className="ml-2 text-xl">Algorithm Site</p>
       </Section.Title>
       <Section.Container>
         <SiteCard url="https://www.acmicpc.net/" image="/images/BOJ.png" />
