@@ -19,14 +19,14 @@ public interface CodeRepository extends JpaRepository<Code, Integer> {
             "and c.algorithmQuest.algorithmQuestId = :algorithmQuestId " +
             "order by  c.codeId desc "
     )
-    Page<Code> findByAlgorithmQuestIdAndMemberIdByPage(@Param("memberId") int memberId, @Param("algorithmQuestId") int algorithmQuestId, Pageable pageable);
+    List<Code> findByAlgorithmQuestIdAndMemberIdByPage(@Param("memberId") int memberId, @Param("algorithmQuestId") int algorithmQuestId);
 
     @Query("SELECT c " +
             "from Code c " +
             "where c.member.memberId = :memberId " +
             "order by  c.codeId desc "
     )
-    Page<Code> findByMemberIdByPage(@Param("memberId") int memberId, Pageable pageable);
+    List<Code> findByMemberIdByPage(@Param("memberId") int memberId);
 
     @Query("SELECT c.codeId " +
             "from Code c " +
