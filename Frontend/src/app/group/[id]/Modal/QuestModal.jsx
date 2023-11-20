@@ -69,7 +69,7 @@ const QuestModal = ({ isOpen, onClose, scheduleId, fetchSchduelQuest }) => {
       <Modal.Dimmed>
         <Modal.Container className="bg-white" width="80vh" height="65vh">
           <Modal.Close onClick={onClickClose} />
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center h-full pb-3">
             <Modal.Title>문제 추가</Modal.Title>
             <div className="flex flex-row-reverse w-full">
               <Button

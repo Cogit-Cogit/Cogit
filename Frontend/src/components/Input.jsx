@@ -56,7 +56,7 @@ function InputDate({ startDate, endDate, isStart, mindate, onChange }) {
   return (
     <div className="flex justify-between">
       <DatePicker
-        className="pb-1 mr-1 text-xl font-semibold bg-transparent text-hover "
+        className="w-full pb-1 mr-1 text-xl font-semibold bg-transparent text-hover"
         selected={isStart ? startDate : endDate}
         onChange={onChange}
         startDate={startDate}

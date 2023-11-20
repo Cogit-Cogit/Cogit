@@ -41,7 +41,7 @@ function ScheduleModal({ isOpen, onClose, teamId }) {
       <Modal.Dimmed>
         <Modal.Container className="bg-white" width="80vh" height="60vh">
           <Modal.Close onClick={onClickClose} />
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center h-full pb-3">
             <Modal.Title>일정 추가</Modal.Title>
             <div className="flex flex-col items-center justify-center w-11/12 h-[340px] bg-white mt-3 rounded-large mb-3">
               <Input className="w-full">
@@ -56,9 +56,9 @@ function ScheduleModal({ isOpen, onClose, teamId }) {
                 </Input.Wrapper>
               </Input>
               <div className="flex justify-center">
-                <Input className="w-2/5 mx-3 mt-10">
+                <Input className="w-[55%] mr-3 mt-10">
                   <Input.Title>시작일</Input.Title>
-                  <Input.Wrapper className="justify-between">
+                  <Input.Wrapper className="justify-between w-full">
                     <Input.Date
                       startDate={startDate}
                       endDate={endDate}
@@ -68,9 +68,9 @@ function ScheduleModal({ isOpen, onClose, teamId }) {
                   </Input.Wrapper>
                 </Input>
                 <Input.Unit className="mt-16">~</Input.Unit>
-                <Input className="w-2/5 mx-3 mt-10">
+                <Input className="w-[55%] ml-3 mt-10">
                   <Input.Title>종료일</Input.Title>
-                  <Input.Wrapper className="justify-between">
+                  <Input.Wrapper className="justify-between w-full">
                     <Input.Date
                       startDate={startDate}
                       endDate={endDate}
