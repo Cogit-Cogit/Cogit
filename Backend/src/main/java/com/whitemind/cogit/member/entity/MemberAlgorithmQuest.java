@@ -28,9 +28,9 @@ public class MemberAlgorithmQuest {
     private AlgorithmQuest algorithmQuest;
 
     @Column(nullable = false)
-    private boolean memberAlgorithmQuestSolved;
+    private int memberAlgorithmQuestSolved;
 
     public void checkSolved() {
-        this.memberAlgorithmQuestSolved = true;
+        this.memberAlgorithmQuestSolved = 2;
     }
 }

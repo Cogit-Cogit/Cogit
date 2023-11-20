@@ -120,7 +120,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                 GetMemberAlgorithmQuestDto getMemberAlgorithmQuest = GetMemberAlgorithmQuestDto.builder()
                     .memberAlgorithmQuestId(memberAlgorithmQuest.getMemberAlgorithmQuestId())
                     .memberId(memberAlgorithmQuest.getMember().getMemberId())
-                    .memberAlgorithmQuestSolved(memberAlgorithmQuest.isMemberAlgorithmQuestSolved())
+                    .memberAlgorithmQuestSolved(memberAlgorithmQuest.getMemberAlgorithmQuestSolved())
                     .build();
                 getMemberAlgorithmQuests.add(getMemberAlgorithmQuest);
             }
