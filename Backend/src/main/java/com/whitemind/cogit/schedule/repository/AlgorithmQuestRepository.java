@@ -20,8 +20,7 @@ public interface AlgorithmQuestRepository extends JpaRepository<AlgorithmQuest, 
 
     @Query("select q " +
     "from  AlgorithmQuest q " +
-    "where :algorithmQuestNumber IS NULL OR q.algorithmQuestNumber = :algorithmQuestNumber " +
-    "and :algorithmQuestPlatform IS NULL OR q.algorithmQuestPlatform = :algorithmQuestPlatform")
+    "where q.algorithmQuestPlatform = :algorithmQuestPlatform")
     List<AlgorithmQuest> findByQuestIdAndPlatform(
-            @Param("algorithmQuestNumber") int algorithmQuestNumber,@Param("algorithmQuestPlatform") AlgorithmQuestPlatform algorithmQuestPlatform);
+            @Param("algorithmQuestPlatform") AlgorithmQuestPlatform algorithmQuestPlatform);
 }

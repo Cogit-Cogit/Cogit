@@ -18,5 +18,5 @@ public interface CodeService {
 
     List<GetCodeHistoryResponse> getMyAllCodeHistory(int page, HttpServletRequest request);
 
-    int getMemberCodeId(int memberId, int algorithmQuestId);
+    List<Integer> getMemberCodeId(int memberId, int algorithmQuestId);
 }

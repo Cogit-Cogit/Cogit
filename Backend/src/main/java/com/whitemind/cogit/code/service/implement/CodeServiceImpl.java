@@ -163,13 +163,15 @@ public class CodeServiceImpl implements CodeService {
         Member member = memberRepository.findMembersByMemberId((int) request.getAttribute("memberId"));
 
         // 문제 번호, 문제 플랫폼으로 algorithmQuest 조회
-        List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findByQuestIdAndPlatform(algorithmQuestNumber, setPlatform(platform));
+        List<AlgorithmQuest> algorithmQuestList = algorithmQuestRepository.findByQuestIdAndPlatform(setPlatform(platform))
+                .stream().filter(algorithmQuest -> Integer.toString(algorithmQuest.getAlgorithmQuestNumber()).contains(Integer.toString(algorithmQuestNumber)))
+                .collect(Collectors.toList());
 
         List<GetCodeHistoryResponse> getCodeHistoryResponseList = new ArrayList<>();
 
         for (AlgorithmQuest algorithmQuest : algorithmQuestList) {
             // algorithmQuest 목록 중, 내가 제출한 코드 페이지 별로 조회
-            List<Code> codeList = codeRepository.findByAlgorithmQuestIdAndMemberIdByPage(member.getMemberId(), algorithmQuest.getAlgorithmQuestId(), PageRequest.of(page, 10)).getContent();
+            List<Code> codeList = codeRepository.findByAlgorithmQuestIdAndMemberIdByPage(member.getMemberId(), algorithmQuest.getAlgorithmQuestId());
 
             for (Code code : codeList) {
                 getCodeHistoryResponseList.add(GetCodeHistoryResponse.builder()
@@ -189,7 +191,7 @@ public class CodeServiceImpl implements CodeService {
     public List<GetCodeHistoryResponse> getMyAllCodeHistory(int page, HttpServletRequest request) {
         log.info("getMyAllCodeHistory | 내 전체 코드 제출 기록 조회");
         Member member = memberRepository.findMembersByMemberId((int) request.getAttribute("memberId"));
-        List<Code> codeList = codeRepository.findByMemberIdByPage(member.getMemberId(), PageRequest.of(page, 10)).getContent();
+        List<Code> codeList = codeRepository.findByMemberIdByPage(member.getMemberId());
         return codeList.stream().map(code -> GetCodeHistoryResponse.builder()
                 .codeId(code.getCodeId())
                 .codeSolved(code.isCodeSolved())
@@ -201,7 +203,7 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public int getMemberCodeId(int memberId, int algorithmQuestId) {
+    public List<Integer> getMemberCodeId(int memberId, int algorithmQuestId) {
         return codeRepository.findFirstByMemberIdAndAlgorithmQuestId(memberId, algorithmQuestId);
     }
 
