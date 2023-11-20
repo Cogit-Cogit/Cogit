@@ -1,0 +1,1 @@
+package com.whitemind.cogit.schedule.dto;import java.time.LocalDate;import lombok.Builder;import lombok.Data;import lombok.Getter;@Builder@Getterpublic class GetScheduleDto {	private int scheduleId;	private String scheduleName;	private LocalDate scheduleStartAt;	private LocalDate scheduleEndAt;}

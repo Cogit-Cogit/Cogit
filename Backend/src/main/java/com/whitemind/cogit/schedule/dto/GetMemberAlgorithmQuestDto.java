@@ -1,0 +1,1 @@
+package com.whitemind.cogit.schedule.dto;import lombok.Builder;import lombok.Getter;@Builder@Getterpublic class GetMemberAlgorithmQuestDto {	private int memberAlgorithmQuestId;	private int memberId;	private int memberAlgorithmQuestSolved;}

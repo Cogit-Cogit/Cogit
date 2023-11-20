@@ -1,0 +1,1 @@
+package com.whitemind.cogit.member.dto.request;import java.util.ArrayList;import lombok.AllArgsConstructor;import lombok.Getter;import lombok.NoArgsConstructor;@AllArgsConstructor@NoArgsConstructor@Getterpublic class AddMemberRequest {	private int memberId;	private int teamId;}

@@ -1,0 +1,1 @@
+package com.whitemind.cogit.member.repository;import org.springframework.data.jpa.repository.JpaRepository;import com.whitemind.cogit.member.entity.Team;import java.util.List;public interface TeamRepository extends JpaRepository<Team, Integer> {    List<Team> findByTeamName(String teamName);}
