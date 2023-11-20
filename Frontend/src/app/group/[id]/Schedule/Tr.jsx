@@ -6,7 +6,7 @@ function Tr({ member, questions }) {
 
   return (
     <tr className="bg-white border-2 border-gray-200">
-      <td className="px-4 py-3">{member.memberName}</td>
+      <td className="px-4 py-3">{member.memberNickname}</td>
       {questions.map((question, iIdx) => {
         num = 0;
         question.memberAlgorithmQuestList.map((memberQuest, jIdx) => {

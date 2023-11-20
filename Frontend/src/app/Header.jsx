@@ -1,12 +1,13 @@
 'use client';
 
 import Profile from '@/components/User/Profile';
-import Logo from '@/icons/logo.svg'
+import Logo from '@/icons/logo.svg';
 import Link from 'next/link';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 function Header() {
-  const isLogin = true;
+  const isLogin = useSelector((state) => state.user.isLogin);
 
   return (
     <nav className="flex items-center justify-between w-full p-4 bg-white drop-shadow-md h-[7vh]">
