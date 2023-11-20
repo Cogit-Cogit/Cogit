@@ -12,7 +12,7 @@ function Tr({ member, questions }) {
         question.memberAlgorithmQuestList.map((memberQuest, jIdx) => {
           if (memberQuest.memberId == member.memberId) {
             num = memberQuest.memberAlgorithmQuestSolved;
-
+            console.log('memberId : ' + memberId + ' num : ' + num);
             if (num > 0) {
               return <LinkTd member={member} questionId={question.algorithmQuestId} solved={num} />;
             } else {
