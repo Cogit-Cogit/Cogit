@@ -1,11 +1,18 @@
 import React from 'react';
 import { Modal } from '../Modal';
 import Button from '../Button';
+import { useDispatch } from 'react-redux';
+import { logout } from '@/redux/userSlice';
+import { useRouter } from 'next/navigation';
 
 function LogoutModal({ isOpen, onClose }) {
+  const dispatch = useDispatch();
+  const router = useRouter();
 
     const onClickLogout = () => {
         dispatch(logout());
+        onClose();
+        router.push('/');
     };
 
   return (
